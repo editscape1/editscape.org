@@ -44,7 +44,7 @@ AARPITA EDITWEB/
 
 ## Local Development
 - You can override any variable by creating a `.env.local` file (if supported by your environment) or by editing `.env` temporarily.
-- For local testing, you can set `CORS_ORIGINS=*` and `FLASK_ENV=development` in `.env.local`.
+- For local testing, you can set `CORS_ORIGINS=*` and `FLASK_ENV=production` in `.env.local`.
 
 ## Deployment
 - Compatible with Render, Heroku, Railway, or any VPS.
