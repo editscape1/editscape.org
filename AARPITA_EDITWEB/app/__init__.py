@@ -18,7 +18,7 @@ def create_app():
     setup_logging()
     app = Flask(
         __name__,
-        static_folder=os.path.join(os.path.dirname(__file__), "public"),
+        static_folder="public",
         static_url_path="/"
     )
     app.config.from_mapping(
