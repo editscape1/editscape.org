@@ -21,8 +21,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy backend code
 COPY AARPITA_EDITWEB/ .
 
-# Copy built frontend into backend's static directory
-COPY --from=frontend-build /app/dist ./static
+# Copy built frontend into backend's public directory for Flask static serving
+COPY --from=frontend-build /app/dist ./AARPITA_EDITWEB/public
 
 # Set environment variables
 ENV FLASK_APP=run.py
