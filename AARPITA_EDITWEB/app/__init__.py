@@ -16,7 +16,11 @@ migrate = Migrate()
 def create_app():
     load_dotenv()
     setup_logging()
-    app = Flask(__name__, static_folder=os.path.abspath(os.path.join(os.path.dirname(__file__), "../../AARPITA_EDITWEB/public")), static_url_path="/")
+    app = Flask(
+        __name__,
+        static_folder=os.path.join(os.path.dirname(__file__), "public"),
+        static_url_path="/"
+    )
     app.config.from_mapping(
         SECRET_KEY=os.getenv("SECRET_KEY", "changeme"),
         SQLALCHEMY_DATABASE_URI=os.getenv("SQLALCHEMY_DATABASE_URI", "sqlite:///site.db"),
