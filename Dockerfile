@@ -9,6 +9,7 @@ COPY public ./public
 COPY src ./src
 RUN npm install
 RUN npm run build
+RUN echo "Contents of /app/dist after build:" && ls -l /app/dist || true
 
 # Step 2: Build Python backend
 FROM python:3.11-slim AS backend
@@ -22,10 +23,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY AARPITA_EDITWEB/ .
 
 # Copy built frontend into backend's app/public directory for Flask static serving
-COPY --from=frontend-build /app/dist /app/AARPITA_EDITWEB/app/public
+COPY --from=frontend-build /app/dist/. /app/AARPITA_EDITWEB/app/public
 
-# Debug: list contents of the public directory
-RUN ls -l /app/AARPITA_EDITWEB/app/public
+# Debug: list contents of the dist and public directories
+RUN echo "Contents of /app/dist after build:" && ls -l /app/dist || true
+RUN echo "Contents of /app/AARPITA_EDITWEB/app/public after copy:" && ls -l /app/AARPITA_EDITWEB/app/public || true
 
 # Set environment variables
 ENV FLASK_APP=run.py
