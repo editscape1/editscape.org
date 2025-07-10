@@ -22,7 +22,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY AARPITA_EDITWEB/ .
 
 # Copy built frontend into backend's public directory for Flask static serving
-COPY --from=frontend-build /app/dist ./AARPITA_EDITWEB/public
+COPY --from=frontend-build /app/dist /app/AARPITA_EDITWEB/public
 
 # Set environment variables
 ENV FLASK_APP=run.py
@@ -32,4 +32,6 @@ ENV FLASK_ENV=production
 EXPOSE 5000
 
 # Run Flask app
-CMD ["flask", "run", "--host=0.0.0.0"] 
+CMD ["flask", "run", "--host=0.0.0.0"]
+
+RUN ls -l /app/AARPITA_EDITWEB/public 
