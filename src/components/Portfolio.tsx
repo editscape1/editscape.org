@@ -91,6 +91,10 @@ export const Portfolio = () => {
           <h2 className="text-5xl md:text-6xl font-black tracking-wider mb-8">
             OUR <span className="text-green-400 drop-shadow-[0_0_30px_rgba(16,185,129,0.8)]">PORTFOLIO</span>
           </h2>
+          <video controls width="600">
+           <source src="https://www.playbook.com/editscape/wPbofNY3SSapqFTG6UAL9YqL?assetToken=uezouAwUp8QojVyminA6KPLX" type="video/mp4" />
+           Your browser does not support the video tag.
+          </video>
           <div className="w-32 h-1 bg-green-400 mx-auto mb-8"></div>
           <p className="text-xl text-gray-300 max-w-4xl mx-auto mb-12 leading-relaxed">
             Explore our diverse collection of video editing projects that showcase our expertise and creativity.
