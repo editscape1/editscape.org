@@ -30,10 +30,13 @@ export const Portfolio = () => {
   const fetchPortfolio = async () => {
     try {
       const res = await fetch('/api/portfolio/');
+      if (!res.ok) throw new Error('API error');
       const data = await res.json();
       setPortfolioItems(data);
     } catch (err) {
-      toast.error('Failed to load portfolio.');
+      // Only show a toast, but do NOT return or break rendering
+      // toast.error('Failed to load portfolio.');
+      setPortfolioItems([]); // Ensure it's an empty array, not undefined
     }
   };
 
