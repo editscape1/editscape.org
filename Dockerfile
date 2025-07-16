@@ -9,14 +9,14 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 # Install dependencies
-COPY requirements.txt /app/
+COPY backend/requirements.txt /app/
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Copy project files
-COPY . /app/
+COPY backend/ /app/
 
 # Expose the port (FastAPI default for this project)
 EXPOSE 10000
 
 # Start the app with uvicorn (FastAPI)
-CMD ["uvicorn", "AARPITA_EDITWEB.run:app", "--host", "0.0.0.0", "--port", "10000"] 
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "10000"] 
