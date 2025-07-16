@@ -1,8 +1,0 @@
-Flask
-Flask-SQLAlchemy
-Flask-Migrate
-Flask-Cors
-Flask-Mail
-python-dotenv
-gunicorn
-gunicorn
