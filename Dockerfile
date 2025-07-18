@@ -19,4 +19,4 @@ COPY backend/ /app/
 EXPOSE 10000
 
 # Start the app with uvicorn (FastAPI)
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "10000"] 
+CMD ["gunicorn", "run:app", "--bind", "0.0.0.0:10000"] 
