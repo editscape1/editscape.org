@@ -77,7 +77,7 @@ LOGIN_TEMPLATE = '''
 @admin_bp.route('/admin', methods=['GET', 'POST'])
 def admin_login():
     if session.get('admin_logged_in'):
-        messages = ContactMessage.query.order_by(ContactMessage.timestamp.desc()).all()
+        messages = ContactMessage.query.order_by(ContactMessage.timestamp.asc()).all()
         return render_template_string(ADMIN_TEMPLATE, messages=messages)
     error = None
     if request.method == 'POST':
