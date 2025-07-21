@@ -15,3 +15,10 @@ class ContactMessage(db.Model):
     email = db.Column(db.String(120), nullable=False)
     message = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow) 
+class PortfolioItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    media_url = db.Column(db.String(255), nullable=False)
+    media_type = db.Column(db.String(10), nullable=False)  # 'image' or 'video'
+    thumbnail_url = db.Column(db.String(255), nullable=True)
