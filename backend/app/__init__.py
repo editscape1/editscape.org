@@ -65,4 +65,10 @@ def create_app():
     print("Registered routes:")
     for rule in app.url_map.iter_rules():
         print(rule)
+
+    # Temporary test route
+    @app.route("/test")
+    def test():
+        return "Backend is working!"
+        
     return app 
