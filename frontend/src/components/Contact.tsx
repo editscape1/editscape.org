@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
+import { apiService } from '@/services/api';
 
 export const Contact = () => {
   const [formData, setFormData] = useState({
@@ -20,20 +21,12 @@ export const Contact = () => {
     }
     setLoading(true);
     try {
-      const res = await fetch('/api/contact/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        toast.error(data.error || 'Failed to send message.');
-      } else {
-        toast.success('Message sent successfully! We\'ll get back to you soon.');
-        setFormData({ name: '', email: '', message: '' });
-      }
+      await apiService.sendContactMessage(formData);
+      toast.success('Message sent successfully! We\'ll get back to you soon.');
+      setFormData({ name: '', email: '', message: '' });
     } catch (err) {
-      toast.error('Network error. Please try again later.');
+      console.error('Failed to send message:', err);
+      toast.error('Failed to send message. Please try again later.');
     } finally {
       setLoading(false);
     }
