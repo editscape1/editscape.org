@@ -26,8 +26,6 @@ const samplePortfolioItems: PortfolioItem[] = [
     link: '#',
     created_at: '2024-06-01',
   },
-
-  
 ];
 
 export const Portfolio = () => {
