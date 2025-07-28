@@ -8,6 +8,34 @@ import { toast } from 'sonner';
 import ProgressBarWithWave from './ProgressBarWithWave';
 import { apiService, PortfolioItem } from '@/services/api';
 
+// Sample portfolio data for fallback
+const samplePortfolioItems: PortfolioItem[] = [
+  {
+    id: 1,
+    title: 'Pharmaceutical Product Edit',
+    description: 'A visually striking product ad created for apo-RHEUM Joint Pain Drops, blending high-speed splash effects with dramatic lighting to capture freshness and impact.',
+    image_url: 'https://res.cloudinary.com/dijbpjech/image/upload/v1752495311/Image_ujkxqb.jpg',
+    link: '#',
+    created_at: '2024-06-01',
+  },
+  {
+    id: 2,
+    title: 'Product Visualization',
+    description: 'Premium product photography with enhanced lighting and composition for maximum visual impact.',
+    image_url: 'https://res.cloudinary.com/dijbpjech/image/upload/v1752495311/Image_ujkxqb.jpg',
+    link: '#',
+    created_at: '2024-06-01',
+  },
+  {
+    id: 3,
+    title: 'Brand Storytelling',
+    description: 'Creative visual narratives that connect brands with their audiences through compelling imagery.',
+    image_url: 'https://res.cloudinary.com/dijbpjech/image/upload/v1752495311/Image_ujkxqb.jpg',
+    link: '#',
+    created_at: '2024-06-01',
+  },
+];
+
 export const Portfolio = () => {
   const [showPortfolio, setShowPortfolio] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -38,7 +66,8 @@ export const Portfolio = () => {
       } catch (err) {
         if (!didCancel) {
           console.error('Failed to fetch portfolio:', err);
-          setError('Failed to load portfolio items');
+          // Use sample data as fallback when backend is not available
+          setItems(samplePortfolioItems);
           setLoading(false);
         }
       }
@@ -93,18 +122,7 @@ export const Portfolio = () => {
         {showPortfolio && (
           <div className="flex flex-col items-center">
             {loading && <ProgressBarWithWave duration={loaderDuration} />}
-            {error && (
-              <div className="text-red-400 text-center mt-8">
-                <p>{error}</p>
-                <button
-                  onClick={() => setShowPortfolio(false)}
-                  className="mt-4 bg-green-500 hover:bg-green-600 text-black font-bold px-6 py-2 rounded-lg transition-all duration-300"
-                >
-                  Try Again
-                </button>
-              </div>
-            )}
-            {items && !loading && !error && (
+            {items && !loading && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
                 {items.map((item) => (
                   <div key={item.id} className="group bg-black/40 backdrop-blur-sm border-2 border-green-500/30 rounded-2xl overflow-hidden hover:border-green-500/80 transition-all duration-500 transform hover:scale-105 relative">
