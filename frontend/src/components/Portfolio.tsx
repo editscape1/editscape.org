@@ -34,6 +34,30 @@ const samplePortfolioItems: PortfolioItem[] = [
     link: '#',
     created_at: '2024-06-01',
   },
+  {
+    id: 4,
+    title: 'Video Editing',
+    description: 'Professional video editing with seamless transitions and dynamic effects.',
+    image_url: 'https://res.cloudinary.com/dijbpjech/image/upload/v1752495311/Image_ujkxqb.jpg',
+    link: '#',
+    created_at: '2024-06-01',
+  },
+  {
+    id: 5,
+    title: 'Motion Graphics',
+    description: 'Animated graphics and visual effects that bring static content to life.',
+    image_url: 'https://res.cloudinary.com/dijbpjech/image/upload/v1752495311/Image_ujkxqb.jpg',
+    link: '#',
+    created_at: '2024-06-01',
+  },
+  {
+    id: 6,
+    title: 'Color Grading',
+    description: 'Expert color correction and grading to enhance visual appeal and mood.',
+    image_url: 'https://res.cloudinary.com/dijbpjech/image/upload/v1752495311/Image_ujkxqb.jpg',
+    link: '#',
+    created_at: '2024-06-01',
+  },
 ];
 
 export const Portfolio = () => {
@@ -126,16 +150,16 @@ export const Portfolio = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
                 {items.map((item) => (
                   <div key={item.id} className="group bg-black/40 backdrop-blur-sm border-2 border-green-500/30 rounded-2xl overflow-hidden hover:border-green-500/80 transition-all duration-500 transform hover:scale-105 relative">
-                    <div className="relative aspect-[4/3] bg-gray-800">
+                    <div className="relative aspect-[16/9] bg-gray-800">
                       <img
                         src={item.image_url}
                         alt={item.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                       />
                     </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-white mb-2 tracking-wider">{item.title}</h3>
-                      <p className="text-gray-300 text-sm leading-relaxed">
+                    <div className="p-4">
+                      <h3 className="text-lg font-bold text-white mb-2 tracking-wider">{item.title}</h3>
+                      <p className="text-gray-300 text-xs leading-relaxed">
                         {item.description}
                       </p>
                     </div>
