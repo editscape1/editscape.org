@@ -70,5 +70,9 @@ def create_app():
     @app.route("/test")
     def test():
         return "Backend is working!"
-        
+
+     # ✅ Auto-create tables
+    with app.app_context():
+        db.create_all()
+
     return app 
