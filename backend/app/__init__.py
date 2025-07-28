@@ -48,16 +48,10 @@ def create_app():
     @app.route("/", defaults={"path": ""})
     @app.route("/<path:path>")
     def serve_frontend(path):
-        print(f"serve_frontend called with path: {path}")
-        print("app.static_folder:", app.static_folder)
         if path.startswith("api/"):
             return ("Not Found", 404)
         if path and os.path.exists(os.path.join(app.static_folder, path)):
-            print("Serving static file:", os.path.join(app.static_folder, path))
             return send_from_directory(app.static_folder, path)
-        index_path = os.path.join(app.static_folder, "index.html")
-        print("Trying to serve index.html from:", index_path)
-        print("Exists?", os.path.exists(index_path))
         return send_from_directory(app.static_folder, "index.html")
 
     @app.route("/test")
@@ -74,9 +68,5 @@ def create_app():
 
     with app.app_context():
         db.create_all()
-
-    print("Registered routes:")
-    for rule in app.url_map.iter_rules():
-        print(rule)
 
     return app
