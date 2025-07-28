@@ -3,28 +3,27 @@ from . import db
 from .models import PortfolioItem
 from sqlalchemy.exc import SQLAlchemyError
 import os
+import traceback
 
 portfolio_bp = Blueprint('portfolio', __name__)
 
-import tracebook
-
 @portfolio_bp.route('/', methods=['GET'])
 def get_portfolio():
-    try:
-        items = PortfolioItem.query.order_by(PortfolioItem.created_at.desc()).all()
-        return jsonify([
-            {
-                'id': item.id,
-                'title': item.title,
-                'description': item.description,
-                'image_url': item.image_url,
-                'link': item.link,
-                'created_at': item.created_at.isoformat()
-            } for item in items
-        ])
-    except SQLAlchemyError as e:
-        traceback.print_exc()  # 👈 this prints full error to logs
-        return jsonify({'error': str(e)}), 500
+    try:
+        items = PortfolioItem.query.order_by(PortfolioItem.created_at.desc()).all()
+        return jsonify([
+            {
+                'id': item.id,
+                'title': item.title,
+                'description': item.description,
+                'image_url': item.image_url,
+                'link': item.link,
+                'created_at': item.created_at.isoformat()
+            } for item in items
+        ])
+    except SQLAlchemyError as e:
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
 
 @portfolio_bp.route('/', methods=['POST'])
 def add_portfolio():
@@ -73,4 +72,4 @@ def delete_portfolio(item_id):
         return jsonify({'message': 'Portfolio item deleted'})
     except SQLAlchemyError as e:
         db.session.rollback()
-        return jsonify({'error': 'Failed to delete item.'}), 500 
+        return jsonify({'error': 'Failed to delete item.'}), 500
