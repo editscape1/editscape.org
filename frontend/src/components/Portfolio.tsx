@@ -13,51 +13,21 @@ const samplePortfolioItems: PortfolioItem[] = [
   {
     id: 1,
     title: 'Pharmaceutical Product Edit',
-    description: 'A visually striking product ad created for apo-RHEUM Joint Pain Drops, blending high-speed splash effects with dramatic lighting to capture freshness and impact.',
+    description: 'This visual edit was crafted to elevate a pharmaceutical product—Apo-RHEUM Joint Pain Drops—into a premium, high-impact advertisement. The design centers the product with dramatic lighting and a crystal-clear focus, while surrounding it with dynamic water splashes to symbolize relief, purity, and efficacy. The color grading enhances the cool, clinical tones of trust and precision, while maintaining a visually immersive and futuristic aesthetic. Typography is bold and purposeful, delivering key product benefits with clarity and authority',
     image_url: 'https://res.cloudinary.com/dijbpjech/image/upload/v1752495311/Image_ujkxqb.jpg',
     link: '#',
     created_at: '2024-06-01',
   },
   {
     id: 2,
-    title: 'Product Visualization',
-    description: 'Premium product photography with enhanced lighting and composition for maximum visual impact.',
-    image_url: 'https://res.cloudinary.com/dijbpjech/image/upload/v1752495311/Image_ujkxqb.jpg',
+    title: 'Alpino Super Oats Edit',
+    description: 'This edit brings Alpino Oats to life with punchy motion, dynamic text reveals, and a bold visual rhythm. Each frame is designed to catch the eye — from smooth zooms to kinetic cuts that sync perfectly with on-screen messaging.The aesthetic stays modern and minimal, letting the product visuals shine without clutter. A tight, engaging flow makes this ideal for digital-first platforms and brands looking to break through the noise with scroll-stopping clarity.',
+    image_url: 'https://res.cloudinary.com/dijbpjech/video/upload/v1753683607/11g_Fibre_w4cvgz.mp4',
     link: '#',
     created_at: '2024-06-01',
   },
-  {
-    id: 3,
-    title: 'Brand Storytelling',
-    description: 'Creative visual narratives that connect brands with their audiences through compelling imagery.',
-    image_url: 'https://res.cloudinary.com/dijbpjech/image/upload/v1752495311/Image_ujkxqb.jpg',
-    link: '#',
-    created_at: '2024-06-01',
-  },
-  {
-    id: 4,
-    title: 'Video Editing',
-    description: 'Professional video editing with seamless transitions and dynamic effects.',
-    image_url: 'https://res.cloudinary.com/dijbpjech/image/upload/v1752495311/Image_ujkxqb.jpg',
-    link: '#',
-    created_at: '2024-06-01',
-  },
-  {
-    id: 5,
-    title: 'Motion Graphics',
-    description: 'Animated graphics and visual effects that bring static content to life.',
-    image_url: 'https://res.cloudinary.com/dijbpjech/image/upload/v1752495311/Image_ujkxqb.jpg',
-    link: '#',
-    created_at: '2024-06-01',
-  },
-  {
-    id: 6,
-    title: 'Color Grading',
-    description: 'Expert color correction and grading to enhance visual appeal and mood.',
-    image_url: 'https://res.cloudinary.com/dijbpjech/image/upload/v1752495311/Image_ujkxqb.jpg',
-    link: '#',
-    created_at: '2024-06-01',
-  },
+
+  
 ];
 
 export const Portfolio = () => {
