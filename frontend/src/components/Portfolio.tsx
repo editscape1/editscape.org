@@ -131,11 +131,6 @@ export const Portfolio = () => {
                         src={item.image_url}
                         alt={item.title}
                         className="w-full h-full object-cover"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                          target.parentElement!.innerHTML = '<div class="w-full h-full bg-gray-700 flex items-center justify-center text-gray-400"><ImageIcon className="w-12 h-12" /></div>';
-                        }}
                       />
                     </div>
                     <div className="p-6">
