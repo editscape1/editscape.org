@@ -1,7 +1,7 @@
 import os
 from flask import Flask, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from flask_migrate import Migrate, upgrade
 from flask_mail import Mail
 from flask_cors import CORS
 from dotenv import load_dotenv
