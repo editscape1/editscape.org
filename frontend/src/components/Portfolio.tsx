@@ -141,7 +141,7 @@ export const Portfolio = () => {
 <img
   src={item.image_url}
   alt={item.title}
-  className="w-full h-full object-contain cursor-pointer"
+  className="w-full h-[300px] object-contain cursor-pointer"
   onClick={(e) => {
     if (e.target.requestFullscreen) {
       e.target.requestFullscreen();
@@ -155,8 +155,8 @@ export const Portfolio = () => {
  )}
                     </div>
                     <div className="p-4">
-                      <h3 className="text-lg font-bold text-white mb-2 tracking-wider">{item.title}</h3>
-                      <p className="text-gray-350 text-[13px] leading-tight">
+                      <h3 className="text-2xl font-bold text-white mb-2 tracking-wider">{item.title}</h3>
+                      <p className="text-gray-350 text-[13px] leading-relaxed">
                         {item.description}
                       </p>
                     </div>
