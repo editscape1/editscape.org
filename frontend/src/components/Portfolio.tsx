@@ -125,7 +125,7 @@ export const Portfolio = () => {
     type="video/mp4"
     controls
     preload="metadata"
-    className="w-full h-50% object-contain cursor-pointer"
+    className="w-full h-full object-contain cursor-pointer"
     onClick={(e) => {
       if (e.target.paused) {
         e.target.play();
@@ -141,7 +141,7 @@ export const Portfolio = () => {
 <img
   src={item.image_url}
   alt={item.title}
-  className="w-full h-50% object-contain cursor-pointer"
+  className="w-full h-full object-contain cursor-pointer"
   onClick={(e) => {
     if (e.target.requestFullscreen) {
       e.target.requestFullscreen();
