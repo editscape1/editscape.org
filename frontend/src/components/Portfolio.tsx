@@ -107,52 +107,34 @@ export const Portfolio = () => {
               className="bg-green-500 hover:bg-green-600 text-black font-bold px-8 py-3 rounded-xl border-2 border-green-400 hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] transition-all duration-300 text-2xl md:text-3xl tracking-wider mb-8"
               onClick={() => setShowPortfolio(true)}
             >
-              View Portfolio
-            </button>
-          )}
-        </div>
-        {showPortfolio && (
-          <div className="flex flex-col items-center">
-            {loading && <ProgressBarWithWave duration={loaderDuration} />}
-            {items && !loading && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-                {items.map((item) => (
-                  <div key={item.id} className="group bg-black/40 backdrop-blur-sm border-2 border-green-500/30 rounded-2xl overflow-hidden hover:border-green-500/80 transition-all duration-500 transform hover:scale-105 relative">
-                    <div className="relative aspect-[16/9] bg-gray-800">
-                   <div className="w-full md:w-1/2 lg:w-1/3 p-4">
-  <div className="bg-black rounded-lg overflow-hidden flex flex-col justify-between h-[500px]">
-    
-    {/* Fixed height media container */}
-    <div className="h-[250px] w-full overflow-hidden flex items-center justify-center">
-      {
-        item.image_url.toLowerCase().endsWith(".mp4") ? (
-          <video
-            src={item.image_url}
-            className="w-full h-full object-contain"
-            controls
-            preload="metadata"
-            onClick={(e) => {
-              if (e.target.paused) e.target.play();
-              else e.target.pause();
-            }}
-            onEnded={(e) => e.target.pause()}
-          />
-        ) : (
-          <img
-            src={item.image_url}
-            alt={item.title}
-            className="w-full h-full object-contain"
-            }
-           }}
-         />
-        )}
-          </div>
-             {/* Text Content */}
-              <div className="p-4 flex-grow flex flex-col justify-start">
-               <h3 className="text-white text-xl font-bold mb-2 tracking-wider">
-                 {item.title}
-                  </h3>
-                    <p className="text-gray-400 text-sm leading-tight overflow-auto">
+                   } else {
+        e.target.pause();
+      }
+    }}
+    onEnded={(e) => e.target.pause()}
+  >
+    Your browser does not support the video tag.
+  </video>
+) : (
+<img
+  src={item.image_url}
+  alt={item.title}
+  className="w-full h-50% object-contain cursor-pointer"
+  onClick={(e) => {
+    if (e.target.requestFullscreen) {
+      e.target.requestFullscreen();
+    } else if (e.target.webkitRequestFullscreen) {
+      e.target.webkitRequestFullscreen();
+    } else if (e.target.msRequestFullscreen) {
+      e.target.msRequestFullscreen();
+    }
+  }}
+/>
+ )}
+                    </div>
+                    <div className="p-4">
+                      <h3 className="text-lg font-bold text-white mb-2 tracking-wider">{item.title}</h3>
+                      <p className="text-gray-350 text-[13px] leading-tight">
                         {item.description}
                       </p>
                     </div>
