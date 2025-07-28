@@ -67,7 +67,7 @@ def create_app():
             return {"error": str(e)}, 500
 
     with app.app_context():
-        from .models import PortfolioItem
+        from .models import PortfolioItem, ContactMessage
         db.create_all()
 
     return app
