@@ -64,6 +64,14 @@ def create_app():
     def test():
         return "Backend is working!"
 
+    @app.route('/run-migrations', methods=['GET'])
+    def run_migrations():
+        try:
+            upgrade()
+            return {"message": "Database migration successful."}, 200
+        except Exception as e:
+            return {"error": str(e)}, 500
+
     with app.app_context():
         db.create_all()
 
