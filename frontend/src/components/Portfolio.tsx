@@ -125,7 +125,7 @@ export const Portfolio = () => {
     type="video/mp4"
     controls
     preload="metadata"
-    className="w-full h-full object-contain cursor-pointer"
+    className="w-full h-75% object-contain cursor-pointer"
     onClick={(e) => {
       if (e.target.paused) {
         e.target.play();
@@ -138,16 +138,25 @@ export const Portfolio = () => {
     Your browser does not support the video tag.
   </video>
 ) : (
-  <img
-    src={item.image_url}
-    alt={item.title}
-    className="w-full h-full object-contain"
-  />
-)}
+                    <img
+  src={item.image_url}
+  alt={item.title}
+  className="w-full h-75% object-contain cursor-pointer"
+  onClick={(e) => {
+    if (e.target.requestFullscreen) {
+      e.target.requestFullscreen();
+    } else if (e.target.webkitRequestFullscreen) {
+      e.target.webkitRequestFullscreen();
+    } else if (e.target.msRequestFullscreen) {
+      e.target.msRequestFullscreen();
+    }
+  }}
+/>
+
                     </div>
                     <div className="p-4">
                       <h3 className="text-lg font-bold text-white mb-2 tracking-wider">{item.title}</h3>
-                      <p className="text-gray-300 text-xs leading-relaxed">
+                      <p className="text-gray-400 text-[11px] leading-tight">
                         {item.description}
                       </p>
                     </div>
