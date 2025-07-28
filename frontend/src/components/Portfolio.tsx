@@ -138,7 +138,7 @@ export const Portfolio = () => {
     Your browser does not support the video tag.
   </video>
 ) : (
-                    <img
+<img
   src={item.image_url}
   alt={item.title}
   className="w-full h-75% object-contain cursor-pointer"
@@ -152,6 +152,7 @@ export const Portfolio = () => {
     }
   }}
 />
+ )}
                     </div>
                     <div className="p-4">
                       <h3 className="text-lg font-bold text-white mb-2 tracking-wider">{item.title}</h3>
