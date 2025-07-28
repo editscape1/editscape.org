@@ -67,7 +67,7 @@ def create_app():
             return {"error": str(e)}, 500
 
     with app.app_context():
-        db.create_all()
         from . import models
+        db.create_all()
 
     return app
