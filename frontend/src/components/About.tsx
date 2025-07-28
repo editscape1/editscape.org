@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Upload, Camera } from 'lucide-react';
 
 export const About = () => {
-  const [profileImage, setProfileImage] = useState<string>('/lovable-uploads/aarpita-profile.png');
+  const [profileImage, setProfileImage] = useState<string>('/lovable-uploads/0c99cff9-7c4d-4253-987c-154d429d5280.png');
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
