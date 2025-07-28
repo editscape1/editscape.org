@@ -6,7 +6,7 @@ import os
 
 portfolio_bp = Blueprint('portfolio', __name__)
 
-import traceback  # add at top if not already present
+import tracebook
 
 @portfolio_bp.route('/', methods=['GET'])
 def get_portfolio():
