@@ -152,7 +152,6 @@ export const Portfolio = () => {
     }
   }}
 />
-
                     </div>
                     <div className="p-4">
                       <h3 className="text-lg font-bold text-white mb-2 tracking-wider">{item.title}</h3>
