@@ -107,7 +107,29 @@ export const Portfolio = () => {
               className="bg-green-500 hover:bg-green-600 text-black font-bold px-8 py-3 rounded-xl border-2 border-green-400 hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] transition-all duration-300 text-2xl md:text-3xl tracking-wider mb-8"
               onClick={() => setShowPortfolio(true)}
             >
-                   } else {
+              View Portfolio
+            </button>
+          )}
+        </div>
+        {showPortfolio && (
+          <div className="flex flex-col items-center">
+            {loading && <ProgressBarWithWave duration={loaderDuration} />}
+            {items && !loading && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+                {items.map((item) => (
+                  <div key={item.id} className="group bg-black/40 backdrop-blur-sm border-2 border-green-500/30 rounded-2xl overflow-hidden hover:border-green-500/80 transition-all duration-500 transform hover:scale-105 relative">
+                    <div className="relative aspect-[16/9] bg-gray-800">
+                   {item.image_url.toLowerCase().endsWith('.mp4') ? (
+  <video
+    src={item.image_url}
+    type="video/mp4"
+    controls
+    preload="metadata"
+    className="w-full h-50% object-contain cursor-pointer"
+    onClick={(e) => {
+      if (e.target.paused) {
+        e.target.play();
+      } else {
         e.target.pause();
       }
     }}
