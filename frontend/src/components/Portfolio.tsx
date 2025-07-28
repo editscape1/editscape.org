@@ -119,11 +119,31 @@ export const Portfolio = () => {
                 {items.map((item) => (
                   <div key={item.id} className="group bg-black/40 backdrop-blur-sm border-2 border-green-500/30 rounded-2xl overflow-hidden hover:border-green-500/80 transition-all duration-500 transform hover:scale-105 relative">
                     <div className="relative aspect-[16/9] bg-gray-800">
-                      <img
-                        src={item.image_url}
-                        alt={item.title}
-                        className="w-full h-full object-contain"
-                      />
+                   {item.image_url.toLowerCase().endsWith('.mp4') ? (
+  <video
+    src={item.image_url}
+    type="video/mp4"
+    controls
+    preload="metadata"
+    className="w-full h-full object-contain cursor-pointer"
+    onClick={(e) => {
+      if (e.target.paused) {
+        e.target.play();
+      } else {
+        e.target.pause();
+      }
+    }}
+    onEnded={(e) => e.target.pause()}
+  >
+    Your browser does not support the video tag.
+  </video>
+) : (
+  <img
+    src={item.image_url}
+    alt={item.title}
+    className="w-full h-full object-contain"
+  />
+)}
                     </div>
                     <div className="p-4">
                       <h3 className="text-lg font-bold text-white mb-2 tracking-wider">{item.title}</h3>
