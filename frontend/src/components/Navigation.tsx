@@ -55,6 +55,11 @@ export const Navigation = () => {
                 src="/lovable-uploads/144a682b-2c42-4b89-849b-417b0a8dbae8.png" 
                 alt="EDITSCAPE Logo" 
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  target.parentElement!.innerHTML = '<div class="w-full h-full bg-green-500 flex items-center justify-center text-white font-bold text-xs">EDITSC</div>';
+                }}
               />
             </div>
             

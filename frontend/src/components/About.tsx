@@ -58,6 +58,11 @@ export const About = () => {
                     src={profileImage} 
                     alt="Aarpita Mehta" 
                     className="w-full h-full rounded-full object-cover object-center border-4 border-green-500 shadow-[0_0_30px_rgba(16,185,129,0.6)] scale-110"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      target.parentElement!.innerHTML = '<div class="w-full h-full rounded-full bg-green-500 flex items-center justify-center text-white font-bold text-xs">Aarpita Me</div>';
+                    }}
                   />
                   
                   {/* Upload overlay */}
