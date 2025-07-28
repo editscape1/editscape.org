@@ -52,7 +52,7 @@ export const Navigation = () => {
             {/* Circular Logo */}
             <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-green-500 shadow-[0_0_20px_rgba(16,185,129,0.6)] hover:shadow-[0_0_30px_rgba(16,185,129,0.8)] transition-all duration-300 cursor-pointer group">
               <img 
-                src="/lovable-uploads/editscape-logo.png" 
+                src="https://res.cloudinary.com/dijbpjech/image/upload/v1753683758/5421D742-295D-4696-BC61-A63CCCB27955_2_mcdi46.jpg" 
                 alt="EDITSCAPE Logo" 
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
               />

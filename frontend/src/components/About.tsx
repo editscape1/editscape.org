@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Upload, Camera } from 'lucide-react';
 
 export const About = () => {
-  const [profileImage, setProfileImage] = useState<string>('/lovable-uploads/aarpita-profile.png');
+  const [profileImage, setProfileImage] = useState<string>('https://res.cloudinary.com/dijbpjech/image/upload/v1753683775/3BE6B9A4-3DC5-4EF5-8B1A-3755CDEFB678_vmeuom.jpg');
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
