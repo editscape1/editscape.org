@@ -142,17 +142,18 @@ export const Portfolio = () => {
             src={item.image_url}
             alt={item.title}
             className="w-full h-full object-contain"
-          />
-        )
-      }
-    </div>
-    {/* Text Content */}
-    <div className="p-4 flex-grow flex flex-col justify-start">
-      <h3 className="text-white text-xl font-bold mb-2 tracking-wider">
-        {item.title}
-      </h3>
-      <p className="text-gray-400 text-sm leading-tight overflow-auto">
-        {item.description}
+            }
+           }}
+         />
+        )}
+          </div>
+             {/* Text Content */}
+              <div className="p-4 flex-grow flex flex-col justify-start">
+               <h3 className="text-white text-xl font-bold mb-2 tracking-wider">
+                 {item.title}
+                  </h3>
+                    <p className="text-gray-400 text-sm leading-tight overflow-auto">
+                        {item.description}
                       </p>
                     </div>
                   </div>
