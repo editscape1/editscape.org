@@ -22,11 +22,17 @@
 Run these commands to push the changes:
 ```bash
 git add .
-git commit -m "feat: add new logo and profile images"
+git commit -m "feat: add original logo and profile images"
 git push origin main
 ```
 
 ## Current Status
-- ✅ Navigation component updated to use new logo path
-- ✅ About component updated to use new profile image path
-- ⏳ Waiting for you to save the actual image files 
+- ✅ Navigation component updated to use original logo path (no fallbacks)
+- ✅ About component updated to use original profile image path (no fallbacks)
+- ✅ Portfolio component updated to show original images only
+- ⏳ Waiting for you to save the actual image files
+
+## Important Notes
+- **No fallbacks**: The website will only display your original logo and profile image
+- **Clean display**: If images aren't saved yet, they simply won't show until you add them
+- **Professional look**: Once you save the images, they will display perfectly with your branding 
