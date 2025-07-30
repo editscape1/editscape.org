@@ -22,3 +22,4 @@ class ContactMessage(db.Model):
     email = db.Column(db.String(120), nullable=False)
     message = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    responded = db.Column(db.Boolean, default=False)
