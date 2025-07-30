@@ -13,18 +13,17 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 def create_app():
-    # === Load environment variables and logging ===
+    # Load environment variables and logging
     load_dotenv()
     setup_logging()
 
-    # === Create Flask app ===
     app = Flask(
         __name__,
         static_folder="public",
         static_url_path="/"
     )
 
-    # === App Configuration ===
+    # App Configuration
     app.config.from_mapping(
         SECRET_KEY=os.getenv("SECRET_KEY", "changeme"),
         SQLALCHEMY_DATABASE_URI=os.getenv("SQLALCHEMY_DATABASE_URI", "sqlite:///site.db"),
@@ -38,16 +37,16 @@ def create_app():
         CORS_ORIGINS=os.getenv("CORS_ORIGINS", "*")
     )
 
-    # === Initialize extensions ===
+    # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
     mail.init_app(app)
     CORS(app, resources={r"/api/*": {"origins": app.config["CORS_ORIGINS"]}})
 
-    # === Import models AFTER db.init_app ===
+    # Import models
     from .models import PortfolioItem, ContactMessage
 
-    # === Register Blueprints ===
+    # Register Blueprints
     from .portfolio import portfolio_bp
     from .contact import contact_bp
     from .admin import admin_bp
@@ -55,7 +54,7 @@ def create_app():
     app.register_blueprint(contact_bp, url_prefix="/api/contact")
     app.register_blueprint(admin_bp)
 
-    # === Serve frontend ===
+    # Serve Frontend
     @app.route("/", defaults={"path": ""})
     @app.route("/<path:path>")
     def serve_frontend(path):
@@ -65,12 +64,12 @@ def create_app():
             return send_from_directory(app.static_folder, path)
         return send_from_directory(app.static_folder, "index.html")
 
-    # === Health check route ===
+    # Health check
     @app.route("/test")
     def test():
         return "Backend is working!"
 
-    # === Route to manually trigger migrations (for Render) ===
+    # Run migrations (Render)
     @app.route('/run-migrations', methods=['GET'])
     def run_migrations():
         try:
@@ -79,7 +78,6 @@ def create_app():
         except Exception as e:
             return {"error": str(e)}, 500
 
-    # === Create tables (only for SQLite or local testing) ===
     with app.app_context():
         db.create_all()
 
