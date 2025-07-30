@@ -8,7 +8,7 @@ from flask_mail import Message
 load_dotenv()
 
 # 🔍 Debug: check if .env is being loaded correctly
-print("ENV FILE FOUND?", os.path.exists("../.env"))
+print("ENV FILE FOUND?", os.path.exists("backend/.env"))
 print("MAIL_DEFAULT_SENDER FROM ENV:", os.getenv("MAIL_DEFAULT_SENDER"))
 
 # Create and push app context
