@@ -1,7 +1,8 @@
 import os
-from flask import Blueprint, request, render_template_string, redirect, url_for, session, flash
+from flask import Blueprint, request, render_template_string, redirect, url_for, session
 from .models import ContactMessage
 from . import db
+
 print("Loaded admin password:", os.getenv('ADMIN_PASSWORD'))
 
 admin_bp = Blueprint('admin', __name__)
@@ -14,11 +15,13 @@ ADMIN_TEMPLATE = '''
     <title>Admin - Contact Messages</title>
     <style>
         body { font-family: Arial, sans-serif; background: #f4f4f4; }
-        .container { max-width: 800px; margin: 40px auto; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #0001; }
+        .container { max-width: 900px; margin: 40px auto; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #0001; }
         table { width: 100%; border-collapse: collapse; margin-top: 24px; }
         th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
         th { background: #eee; }
         .logout { float: right; }
+        .responded-row { background-color: #e6ffe6; }  /* light green for responded */
+        form { margin: 0; }
     </style>
 </head>
 <body>
@@ -31,14 +34,20 @@ ADMIN_TEMPLATE = '''
                 <th>Email</th>
                 <th>Message</th>
                 <th>Timestamp</th>
+                <th>Responded</th>
             </tr>
             {% for msg in messages %}
-            <tr>
+            <tr class="{% if msg.responded %}responded-row{% endif %}">
                 <td>{{ msg.id }}</td>
                 <td>{{ msg.name }}</td>
                 <td>{{ msg.email }}</td>
                 <td>{{ msg.message }}</td>
                 <td>{{ msg.timestamp }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('admin.toggle_responded', message_id=msg.id) }}">
+                        <input type="checkbox" name="responded" onchange="this.form.submit()" {% if msg.responded %}checked{% endif %}>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </table>
@@ -92,4 +101,11 @@ def admin_login():
 @admin_bp.route('/admin/logout')
 def logout():
     session.pop('admin_logged_in', None)
-    return redirect(url_for('admin.admin_login')) 
+    return redirect(url_for('admin.admin_login'))
+
+@admin_bp.route('/admin/responded/<int:message_id>', methods=['POST'])
+def toggle_responded(message_id):
+    msg = ContactMessage.query.get_or_404(message_id)
+    msg.responded = not msg.responded
+    db.session.commit()
+    return redirect(url_for('admin.admin_login'))
