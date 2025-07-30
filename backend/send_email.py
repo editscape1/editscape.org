@@ -5,9 +5,10 @@ from app.extensions import mail
 app = create_app()
 
 with app.app_context():
+    print("MAIL DEFAULT SENDER:", app.config.get("MAIL_DEFAULT_SENDER"))  # 👈 Add this line
+
     msg = Message(
         subject="Test Email",
-        sender=app.config["MAIL_USERNAME"],
         recipients=["editscape.org@gmail.com"],
         body="This is a test email from Flask app!"
     )
