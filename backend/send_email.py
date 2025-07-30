@@ -4,17 +4,18 @@ from app import create_app
 from app.extensions import mail
 from flask_mail import Message
 
-# ✅ Load .env from the correct path
+# ✅ Load environment variables from .env file in backend/
 dotenv_path = os.path.join(os.path.dirname(__file__), ".env")
 load_dotenv(dotenv_path)
 
-# 🔍 Debug: check if .env is being loaded correctly
+# 🔍 Debugging: Print out loaded values
 print("✅ ENV FILE FOUND?", os.path.exists(dotenv_path))
 print("📧 MAIL_DEFAULT_SENDER FROM ENV:", os.getenv("MAIL_DEFAULT_SENDER"))
 print("🗃️ SQLALCHEMY_DATABASE_URI:", os.getenv("SQLALCHEMY_DATABASE_URI"))
 
 # ✅ Create and push app context
 app = create_app()
+
 with app.app_context():
     try:
         sender_email = app.config.get("MAIL_DEFAULT_SENDER")
