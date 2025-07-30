@@ -1,20 +1,19 @@
 import os
 from flask import Flask, send_from_directory
 from flask_migrate import Migrate, upgrade
-from flask_mail import Mail
 from flask_cors import CORS
 from dotenv import load_dotenv
+
 from .utils import setup_logging
-from .extensions import db, mail  # ✅ Import both db and mail from extensions.py
+from .extensions import db, mail
 
-# === Load .env file before anything else ===
-load_dotenv()
+# === Load environment variables from .env ===
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
 
-# === Define extensions ===
+# === Flask Migrate Setup ===
 migrate = Migrate()
 
 def create_app():
-    # Setup logging
     setup_logging()
 
     app = Flask(
@@ -23,7 +22,7 @@ def create_app():
         static_url_path="/"
     )
 
-    # App Configuration
+    # === Configuration ===
     app.config.from_mapping(
         SECRET_KEY=os.getenv("SECRET_KEY", "changeme"),
         SQLALCHEMY_DATABASE_URI=os.getenv("SQLALCHEMY_DATABASE_URI", "sqlite:///site.db"),
@@ -37,21 +36,21 @@ def create_app():
         CORS_ORIGINS=os.getenv("CORS_ORIGINS", "*")
     )
 
-    # ✅ Print config values for debug
+    # ✅ Debug prints
     print("✅ ENV FILE FOUND?", os.getenv("SECRET_KEY") is not None)
-    print("📧 MAIL_DEFAULT_SENDER FROM ENV:", app.config["MAIL_DEFAULT_SENDER"])
+    print("📧 MAIL_DEFAULT_SENDER:", app.config["MAIL_DEFAULT_SENDER"])
     print("🗃️ SQLALCHEMY_DATABASE_URI:", app.config["SQLALCHEMY_DATABASE_URI"])
 
-    # Initialize extensions
+    # === Initialize extensions ===
     db.init_app(app)
     migrate.init_app(app, db)
     mail.init_app(app)
     CORS(app, resources={r"/api/*": {"origins": app.config["CORS_ORIGINS"]}})
 
-    # Import models (for migrations + admin)
+    # === Import models (for migrations and admin usage) ===
     from .models import PortfolioItem, ContactMessage
 
-    # Register Blueprints
+    # === Register Blueprints ===
     from .portfolio import portfolio_bp
     from .contact import contact_bp
     from .admin import admin_bp
@@ -59,22 +58,23 @@ def create_app():
     app.register_blueprint(contact_bp, url_prefix="/api/contact")
     app.register_blueprint(admin_bp)
 
-    # Serve Frontend
+    # === Serve React Frontend ===
     @app.route("/", defaults={"path": ""})
     @app.route("/<path:path>")
     def serve_frontend(path):
         if path.startswith("api/"):
             return ("Not Found", 404)
-        if path and os.path.exists(os.path.join(app.static_folder, path)):
+        full_path = os.path.join(app.static_folder, path)
+        if path and os.path.exists(full_path):
             return send_from_directory(app.static_folder, path)
         return send_from_directory(app.static_folder, "index.html")
 
-    # Health check
+    # === Health check ===
     @app.route("/test")
     def test():
         return "Backend is working!"
 
-    # Run migrations (for Render.com)
+    # === Run migrations endpoint (for Render) ===
     @app.route('/run-migrations', methods=['GET'])
     def run_migrations():
         try:
@@ -83,8 +83,9 @@ def create_app():
         except Exception as e:
             return {"error": str(e)}, 500
 
-    # Only for local SQLite development (optional)
-    with app.app_context():
-        db.create_all()
+    # === Create DB tables in local development ===
+    if app.config["SQLALCHEMY_DATABASE_URI"].startswith("sqlite"):
+        with app.app_context():
+            db.create_all()
 
     return app
