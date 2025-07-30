@@ -7,12 +7,14 @@ from dotenv import load_dotenv
 from .utils import setup_logging
 from .extensions import db, mail  # ✅ Import both db and mail from extensions.py
 
+# === Load .env file before anything else ===
+load_dotenv()
+
 # === Define extensions ===
 migrate = Migrate()
 
 def create_app():
-    # Load environment variables and setup logging
-    load_dotenv()
+    # Setup logging
     setup_logging()
 
     app = Flask(
@@ -34,6 +36,11 @@ def create_app():
         MAIL_DEFAULT_SENDER=os.getenv("MAIL_DEFAULT_SENDER", ""),
         CORS_ORIGINS=os.getenv("CORS_ORIGINS", "*")
     )
+
+    # ✅ Print config values for debug
+    print("✅ ENV FILE FOUND?", os.getenv("SECRET_KEY") is not None)
+    print("📧 MAIL_DEFAULT_SENDER FROM ENV:", app.config["MAIL_DEFAULT_SENDER"])
+    print("🗃️ SQLALCHEMY_DATABASE_URI:", app.config["SQLALCHEMY_DATABASE_URI"])
 
     # Initialize extensions
     db.init_app(app)
