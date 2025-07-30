@@ -1,15 +1,14 @@
 import os
 from flask import Flask, send_from_directory
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, upgrade
 from flask_mail import Mail
 from flask_cors import CORS
 from dotenv import load_dotenv
 from .utils import setup_logging
+from .extensions import db  # ✅ Corrected import
 
 # === Define extensions ===
 mail = Mail()
-db = SQLAlchemy()
 migrate = Migrate()
 
 def create_app():
@@ -78,6 +77,7 @@ def create_app():
         except Exception as e:
             return {"error": str(e)}, 500
 
+    # Only for SQLite or dev mode
     with app.app_context():
         db.create_all()
 
