@@ -7,9 +7,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from .utils import setup_logging
 
-from .models import PortfolioItem, ContactMessage
-
-# Extensions
+# Extensions (must be defined before importing models to avoid circular import)
 mail = Mail()
 db = SQLAlchemy()
 migrate = Migrate()
@@ -39,6 +37,9 @@ def create_app():
     migrate.init_app(app, db)
     mail.init_app(app)
     CORS(app, resources={r"/api/*": {"origins": app.config["CORS_ORIGINS"]}})
+
+    # Now safe to import models
+    from .models import PortfolioItem, ContactMessage
 
     from .portfolio import portfolio_bp
     from .contact import contact_bp
