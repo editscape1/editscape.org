@@ -5,14 +5,13 @@ from flask_mail import Mail
 from flask_cors import CORS
 from dotenv import load_dotenv
 from .utils import setup_logging
-from .extensions import db  # ✅ Corrected import
+from .extensions import db, mail  # ✅ Import both db and mail from extensions.py
 
 # === Define extensions ===
-mail = Mail()
 migrate = Migrate()
 
 def create_app():
-    # Load environment variables and logging
+    # Load environment variables and setup logging
     load_dotenv()
     setup_logging()
 
@@ -42,7 +41,7 @@ def create_app():
     mail.init_app(app)
     CORS(app, resources={r"/api/*": {"origins": app.config["CORS_ORIGINS"]}})
 
-    # Import models
+    # Import models (for migrations + admin)
     from .models import PortfolioItem, ContactMessage
 
     # Register Blueprints
@@ -68,7 +67,7 @@ def create_app():
     def test():
         return "Backend is working!"
 
-    # Run migrations (Render)
+    # Run migrations (for Render.com)
     @app.route('/run-migrations', methods=['GET'])
     def run_migrations():
         try:
@@ -77,7 +76,7 @@ def create_app():
         except Exception as e:
             return {"error": str(e)}, 500
 
-    # Only for SQLite or dev mode
+    # Only for local SQLite development (optional)
     with app.app_context():
         db.create_all()
 
