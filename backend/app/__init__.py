@@ -7,6 +7,8 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from .utils import setup_logging
 
+from .models import PortfolioItem, ContactMessage
+
 # Extensions
 mail = Mail()
 db = SQLAlchemy()
@@ -67,7 +69,6 @@ def create_app():
             return {"error": str(e)}, 500
 
     with app.app_context():
-        from .models import PortfolioItem, ContactMessage
         db.create_all()
 
     return app
