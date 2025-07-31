@@ -1,7 +1,7 @@
 // API Configuration
 export const API_CONFIG = {
   // Replace with your actual Render backend URL
-  BASE_URL: import.meta.env.VITE_API_URL || 'https://your-backend-app.onrender.com',
+  BASE_URL: import.meta.env.VITE_API_URL || 'https://editscape-orgeditingweb.onrender.com',
   
   // Cloudinary configuration (if needed for direct uploads)
   CLOUDINARY: {
