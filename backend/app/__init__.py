@@ -4,8 +4,8 @@ from flask_migrate import Migrate, upgrade
 from flask_cors import CORS
 from dotenv import load_dotenv
 
-from .utils import setup_logging
-from .extensions import db, mail
+from app.utils import setup_logging
+from app.extensions import db, mail
 
 # === Load environment variables from .env ===
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
@@ -48,12 +48,12 @@ def create_app():
     CORS(app, resources={r"/api/*": {"origins": app.config["CORS_ORIGINS"]}})
 
     # === Import models (for migrations and admin usage) ===
-    from .models import PortfolioItem, ContactMessage
+    from app.models import PortfolioItem, ContactMessage
 
     # === Register Blueprints ===
-    from .portfolio import portfolio_bp
-    from .contact import contact_bp
-    from .admin import admin_bp
+    from app.portfolio import portfolio_bp
+    from app.contact import contact_bp
+    from app.admin import admin_bp
     app.register_blueprint(portfolio_bp, url_prefix="/api/portfolio")
     app.register_blueprint(contact_bp, url_prefix="/api/contact")
     app.register_blueprint(admin_bp)
