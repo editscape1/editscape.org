@@ -33,7 +33,6 @@ def create_app():
         MAIL_USERNAME=os.getenv("MAIL_USERNAME", ""),
         MAIL_PASSWORD=os.getenv("MAIL_PASSWORD", ""),
         MAIL_DEFAULT_SENDER=os.getenv("MAIL_DEFAULT_SENDER", ""),
-        CORS_ORIGINS=os.getenv("CORS_ORIGINS", "*")
     )
 
     # ✅ Debug prints
@@ -45,7 +44,12 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
     mail.init_app(app)
-    CORS(app, resources={r"/api/*": {"origins": app.config["CORS_ORIGINS"]}})
+
+    # ✅ CORS Fix: allow only Vercel and localhost
+    CORS(app, resources={r"/api/*": {"origins": [
+        "https://editscape-org.vercel.app",
+        "http://localhost:3000"
+    ]}})
 
     # === Import models (for migrations and admin usage) ===
     from app.models import PortfolioItem, ContactMessage
