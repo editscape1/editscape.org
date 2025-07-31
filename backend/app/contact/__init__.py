@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, current_app
-from .extensions import db, mail  # ✅ Use extensions.py for db and mail
-from .models import ContactMessage
+from app.extensions import db, mail  # ✅ Use extensions.py for db and mail
+from app.models import ContactMessage
 from flask_mail import Message
 from datetime import datetime
 import logging
