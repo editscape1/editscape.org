@@ -35,11 +35,11 @@ class ApiService {
 
   // Portfolio endpoints
   async getPortfolio(): Promise<PortfolioItem[]> {
-    return this.request<PortfolioItem[]>('/portfolio/');
+    return this.request<PortfolioItem[]>('/api/portfolio/');
   }
 
   async addPortfolioItem(item: Omit<PortfolioItem, 'id' | 'created_at'>, apiKey: string): Promise<{ message: string; id: number }> {
-    return this.request<{ message: string; id: number }>('/portfolio/', {
+    return this.request<{ message: string; id: number }>('/api/portfolio/', {
       method: 'POST',
       headers: {
         'x-api-key': apiKey,
@@ -49,7 +49,7 @@ class ApiService {
   }
 
   async updatePortfolioItem(id: number, item: Partial<PortfolioItem>, apiKey: string): Promise<{ message: string }> {
-    return this.request<{ message: string }>(`/portfolio/${id}`, {
+    return this.request<{ message: string }>(`/api/portfolio/${id}`, {
       method: 'PUT',
       headers: {
         'x-api-key': apiKey,
@@ -59,7 +59,7 @@ class ApiService {
   }
 
   async deletePortfolioItem(id: number, apiKey: string): Promise<{ message: string }> {
-    return this.request<{ message: string }>(`/portfolio/${id}`, {
+    return this.request<{ message: string }>(`/api/portfolio/${id}`, {
       method: 'DELETE',
       headers: {
         'x-api-key': apiKey,
@@ -69,11 +69,11 @@ class ApiService {
 
   // Contact endpoints
   async sendContactMessage(message: ContactMessage): Promise<{ message: string }> {
-    return this.request<{ message: string }>('/contact/', {
+    return this.request<{ message: string }>('/api/contact/', {
       method: 'POST',
       body: JSON.stringify(message),
     });
   }
 }
 
-export const apiService = new ApiService(); 
+export const apiService = new ApiService();
