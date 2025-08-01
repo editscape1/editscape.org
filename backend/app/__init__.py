@@ -57,15 +57,22 @@ def create_app():
     app.register_blueprint(admin_bp)
 
     # === CORS Setup ===
-    CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "*"}})
+    CORS(app, supports_credentials=True, resources={
+        r"/api/*": {
+            "origins": [
+                "https://editscape-org.vercel.app",
+                "http://localhost:3000"
+            ]
+        }
+    })
 
-    # === Handle Preflight (OPTIONS) Requests ===
+    # === Ensure CORS headers on all responses ===
     @app.after_request
     def after_request(response):
-        response.headers.add('Access-Control-Allow-Origin', 'https://editscape-org.vercel.app')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,X-Requested-With')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
+        response.headers.add("Access-Control-Allow-Origin", "https://editscape-org.vercel.app")
+        response.headers.add("Access-Control-Allow-Credentials", "true")
+        response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization,X-Requested-With")
+        response.headers.add("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
         return response
 
     # === Serve React Frontend ===
