@@ -48,7 +48,7 @@ def create_app():
     from app.models import PortfolioItem, ContactMessage
 
     # === Register Blueprints ===
-    from app.portfolio import portfolio_bp
+    from backend.portfolio.routes import portfolio_bp  # Use the backend version with Google Sheets
     from app.contact import contact_bp
     from app.admin import admin_bp
 
@@ -92,15 +92,4 @@ def create_app():
     # === Run migrations endpoint (for Render) ===
     @app.route('/run-migrations', methods=['GET'])
     def run_migrations():
-        try:
-            upgrade()
-            return {"message": "Database migration successful."}, 200
-        except Exception as e:
-            return {"error": str(e)}, 500
-
-    # === Create DB tables in local development ===
-    if app.config["SQLALCHEMY_DATABASE_URI"].startswith("sqlite"):
-        with app.app_context():
-            db.create_all()
-
-    return app
+        try

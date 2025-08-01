@@ -7,3 +7,5 @@ python-dotenv
 cloudinary
 gunicorn
 psycopg2-binary
+gspread
+google-auth
