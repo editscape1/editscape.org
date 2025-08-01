@@ -57,15 +57,10 @@ def create_app():
     app.register_blueprint(admin_bp)
 
     # === CORS Setup AFTER blueprints ===
-    CORS(app, resources={r"/api/*": {
-        "origins": [
-            "https://editscape-org.vercel.app",
-            "http://localhost:3000"
-        ],
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization", "x-api-key"],
-        "supports_credentials": True
-    }})
+    CORS(app, supports_credentials=True, origins=[
+        "https://editscape-org.vercel.app",
+        "http://localhost:3000"
+    ])
 
     # === Serve React Frontend ===
     @app.route("/", defaults={"path": ""})
