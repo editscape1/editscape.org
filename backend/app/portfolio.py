@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, current_app
+ from flask import Blueprint, request, jsonify, current_app
 from . import db
 from .models import PortfolioItem
 from sqlalchemy.exc import SQLAlchemyError
@@ -24,6 +24,16 @@ def get_portfolio():
     except SQLAlchemyError as e:
         traceback.print_exc()
         return jsonify({'error': str(e)}), 500
+
+# ⬇️ CORS preflight handler
+@portfolio_bp.route('/', methods=['OPTIONS'])
+def handle_options():
+    response = jsonify({})
+    response.headers.add("Access-Control-Allow-Origin", "https://editscape-org.vercel.app")
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization, x-api-key")
+    response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
+    response.headers.add("Access-Control-Allow-Credentials", "true")
+    return response
 
 @portfolio_bp.route('/', methods=['POST'])
 def add_portfolio():
