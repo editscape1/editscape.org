@@ -44,12 +44,6 @@ def create_app():
     migrate.init_app(app, db)
     mail.init_app(app)
 
-    # === CORS Setup (fixed for upload POST issue) ===
-    CORS(app, origins=[
-        "https://editscape-org.vercel.app",
-        "http://localhost:3000"
-    ])
-
     # === Import models (for migrations and admin usage) ===
     from app.models import PortfolioItem, ContactMessage
 
@@ -61,6 +55,17 @@ def create_app():
     app.register_blueprint(portfolio_bp, url_prefix="/api/portfolio")
     app.register_blueprint(contact_bp, url_prefix="/api/contact")
     app.register_blueprint(admin_bp)
+
+    # === CORS Setup AFTER blueprints ===
+    CORS(app, resources={r"/api/*": {
+        "origins": [
+            "https://editscape-org.vercel.app",
+            "http://localhost:3000"
+        ],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization", "x-api-key"],
+        "supports_credentials": True
+    }})
 
     # === Serve React Frontend ===
     @app.route("/", defaults={"path": ""})
