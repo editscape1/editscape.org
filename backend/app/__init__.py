@@ -46,15 +46,21 @@ def create_app():
     mail.init_app(app)
 
     # === CORS Setup ===
+        # === CORS Setup ===
     CORS(app, resources={r"/api/*": {
-        "origins": [
-            "https://editscape-org.vercel.app",
-            "http://localhost:3000"
-        ],
+        "origins": ["https://editscape-org.vercel.app", "http://localhost:3000"],
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization"],
         "supports_credentials": True
     }})
+
+    @app.after_request
+    def set_cors_headers(response):
+        response.headers["Access-Control-Allow-Origin"] = "https://editscape-org.vercel.app"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        return response
 
     # === Import models (for migrations and admin usage) ===
     from app.models import PortfolioItem, ContactMessage
