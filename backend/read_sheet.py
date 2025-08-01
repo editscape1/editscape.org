@@ -1,4 +1,4 @@
-from app.utils.sheets_utils import get_google_sheet  # adjust if your utils are elsewhere
+from app.utils.sheets_utils import get_google_sheet  # Adjust if your path differs
 
 def get_active_portfolio_items():
     """
@@ -16,3 +16,12 @@ def get_active_portfolio_items():
     except Exception as e:
         print(f"❌ Error reading sheet: {e}")
         return []
+
+if __name__ == "__main__":
+    items = get_active_portfolio_items()
+    if items:
+        print("✅ Active Portfolio Items:")
+        for i, item in enumerate(items, start=1):
+            print(f"{i}. {item}")
+    else:
+        print("⚠️ No active items found or failed to read sheet.")
