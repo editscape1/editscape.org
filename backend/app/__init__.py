@@ -1,5 +1,5 @@
 import os
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, jsonify
 from flask_migrate import Migrate, upgrade
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -44,7 +44,7 @@ def create_app():
     migrate.init_app(app, db)
     mail.init_app(app)
 
-    # === Import models (for migrations and admin usage) ===
+    # === Import models ===
     from app.models import PortfolioItem, ContactMessage
 
     # === Register Blueprints ===
@@ -57,16 +57,16 @@ def create_app():
     app.register_blueprint(admin_bp)
 
     # === CORS Setup ===
-    CORS(app, supports_credentials=True, resources={
-        r"/api/*": {
-            "origins": [
-                "https://editscape-org.vercel.app",
-                "http://localhost:3000"
-            ],
-            "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"],
-            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-        }
-    })
+    CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "*"}})
+
+    # === Handle Preflight (OPTIONS) Requests ===
+    @app.after_request
+    def after_request(response):
+        response.headers.add('Access-Control-Allow-Origin', 'https://editscape-org.vercel.app')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,X-Requested-With')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
+        return response
 
     # === Serve React Frontend ===
     @app.route("/", defaults={"path": ""})
@@ -80,7 +80,7 @@ def create_app():
     # === Health check ===
     @app.route("/test")
     def test():
-        return "Backend is working!"
+        return jsonify({"message": "Backend is working!"})
 
     # === Run migrations endpoint (for Render) ===
     @app.route('/run-migrations', methods=['GET'])
@@ -95,14 +95,5 @@ def create_app():
     if app.config["SQLALCHEMY_DATABASE_URI"].startswith("sqlite"):
         with app.app_context():
             db.create_all()
-
-    # === Global CORS headers fix (important for Render) ===
-    @app.after_request
-    def apply_cors_headers(response):
-        response.headers["Access-Control-Allow-Origin"] = "https://editscape-org.vercel.app"
-        response.headers["Access-Control-Allow-Credentials"] = "true"
-        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
-        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
-        return response
 
     return app
