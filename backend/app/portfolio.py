@@ -18,7 +18,7 @@ def get_portfolio():
                 'description': item.description,
                 'image_url': item.image_url,
                 'link': item.link,
-                'created_at': item.created_at.isoformat()
+                'created_at': item.created_at.isoformat() if item.created_at else None
             } for item in items
         ])
     except SQLAlchemyError as e:
