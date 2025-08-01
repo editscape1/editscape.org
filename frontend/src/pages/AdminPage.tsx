@@ -1,8 +1,92 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+type PortfolioItem = {
+  id: number;
+  title: string;
+  description: string;
+  media_url: string;
+};
+
 const AdminPage = () => {
+  const [items, setItems] = useState<PortfolioItem[]>([]);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [mediaUrl, setMediaUrl] = useState("");
+
+  // Fetch all portfolio items
+  useEffect(() => {
+    axios.get("/api/portfolio").then((res) => setItems(res.data));
+  }, []);
+
+  // Submit a new item
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const newItem = { title, description, media_url: mediaUrl };
+    await axios.post("/api/portfolio", newItem);
+    const res = await axios.get("/api/portfolio");
+    setItems(res.data);
+    setTitle("");
+    setDescription("");
+    setMediaUrl("");
+  };
+
+  // Delete an item
+  const handleDelete = async (id: number) => {
+    await axios.delete(`/api/portfolio/${id}`);
+    setItems(items.filter((item) => item.id !== id));
+  };
+
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-4">Admin Panel</h1>
-      <p>Welcome to the admin dashboard.</p>
+
+      <form onSubmit={handleSubmit} className="space-y-4 mb-6">
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Title"
+          className="border p-2 w-full"
+          required
+        />
+        <input
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Description"
+          className="border p-2 w-full"
+          required
+        />
+        <input
+          value={mediaUrl}
+          onChange={(e) => setMediaUrl(e.target.value)}
+          placeholder="Cloudinary Image/Video URL"
+          className="border p-2 w-full"
+          required
+        />
+        <button type="submit" className="bg-black text-white px-4 py-2">
+          Upload
+        </button>
+      </form>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {items.map((item) => (
+          <div key={item.id} className="border p-4">
+            {item.media_url.includes(".mp4") ? (
+              <video src={item.media_url} controls className="w-full h-auto" />
+            ) : (
+              <img src={item.media_url} alt={item.title} className="w-full h-auto" />
+            )}
+            <h2 className="text-lg font-semibold mt-2">{item.title}</h2>
+            <p>{item.description}</p>
+            <button
+              onClick={() => handleDelete(item.id)}
+              className="text-red-500 mt-2"
+            >
+              Delete
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
