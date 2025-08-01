@@ -88,6 +88,7 @@ const AdminPage = () => {
         <button
           type="submit"
           className="bg-black text-white py-2 px-4 rounded hover:bg-gray-900 transition"
+          onClick={() => console.log("✅ Upload button clicked")}
         >
           Upload
         </button>
