@@ -1,4 +1,8 @@
-import { API_CONFIG } from '@/config/api';
+// frontend/src/services/api.ts
+
+export const API_CONFIG = {
+  BASE_URL: 'https://editscape-orgeditingweb.onrender.com', // Your live backend URL
+};
 
 export interface PortfolioItem {
   id: number;
