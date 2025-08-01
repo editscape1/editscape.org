@@ -51,8 +51,7 @@ def create_app():
             "http://localhost:3000"
         ],
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization", "x-api-key"],
-        "supports_credentials": True
+        "allow_headers": ["Content-Type", "Authorization", "x-api-key"]
     }})
 
     # === Import models (for migrations and admin usage) ===
