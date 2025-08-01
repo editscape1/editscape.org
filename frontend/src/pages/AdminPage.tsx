@@ -8,7 +8,6 @@ type PortfolioItem = {
   media_url: string;
 };
 
-// 🔗 Use your actual Render backend URL
 const BACKEND_URL = "https://editscape-backend.onrender.com";
 
 const AdminPage = () => {
@@ -17,7 +16,6 @@ const AdminPage = () => {
   const [description, setDescription] = useState("");
   const [mediaUrl, setMediaUrl] = useState("");
 
-  // Fetch all portfolio items
   useEffect(() => {
     fetchItems();
   }, []);
@@ -33,7 +31,6 @@ const AdminPage = () => {
     }
   };
 
-  // Submit a new item
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("📤 Uploading:", { title, description, mediaUrl });
@@ -41,7 +38,7 @@ const AdminPage = () => {
     try {
       const newItem = { title, description, media_url: mediaUrl };
       await axios.post(`${BACKEND_URL}/api/portfolio`, newItem);
-      await fetchItems(); // Refresh the list
+      await fetchItems();
       setTitle("");
       setDescription("");
       setMediaUrl("");
@@ -50,7 +47,6 @@ const AdminPage = () => {
     }
   };
 
-  // Delete an item
   const handleDelete = async (id: number) => {
     try {
       await axios.delete(`${BACKEND_URL}/api/portfolio/${id}`);
@@ -87,12 +83,12 @@ const AdminPage = () => {
           required
         />
         <button
-  type="submit"
-  style={{ pointerEvents: "auto", opacity: 1 }}
-  className="bg-black text-white px-4 py-2"
->
-  Upload
-</button>
+          type="submit"
+          className="bg-black text-white px-4 py-2"
+          style={{ cursor: "pointer" }}
+        >
+          Upload
+        </button>
       </form>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
