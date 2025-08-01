@@ -16,25 +16,43 @@ const AdminPage = () => {
 
   // Fetch all portfolio items
   useEffect(() => {
-    axios.get("/api/portfolio").then((res) => setItems(res.data));
+    fetchItems();
   }, []);
+
+  const fetchItems = async () => {
+    try {
+      const res = await axios.get("/api/portfolio");
+      const data = Array.isArray(res.data) ? res.data : res.data.portfolio || [];
+      setItems(data);
+    } catch (error) {
+      console.error("Error fetching portfolio items:", error);
+      setItems([]);
+    }
+  };
 
   // Submit a new item
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newItem = { title, description, media_url: mediaUrl };
-    await axios.post("/api/portfolio", newItem);
-    const res = await axios.get("/api/portfolio");
-    setItems(res.data);
-    setTitle("");
-    setDescription("");
-    setMediaUrl("");
+    try {
+      const newItem = { title, description, media_url: mediaUrl };
+      await axios.post("/api/portfolio", newItem);
+      await fetchItems(); // Refresh the list
+      setTitle("");
+      setDescription("");
+      setMediaUrl("");
+    } catch (error) {
+      console.error("Error uploading item:", error);
+    }
   };
 
   // Delete an item
   const handleDelete = async (id: number) => {
-    await axios.delete(`/api/portfolio/${id}`);
-    setItems(items.filter((item) => item.id !== id));
+    try {
+      await axios.delete(`/api/portfolio/${id}`);
+      setItems((prev) => prev.filter((item) => item.id !== id));
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
   };
 
   return (
@@ -69,23 +87,28 @@ const AdminPage = () => {
       </form>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {items.map((item) => (
-          <div key={item.id} className="border p-4">
-            {item.media_url.includes(".mp4") ? (
-              <video src={item.media_url} controls className="w-full h-auto" />
-            ) : (
-              <img src={item.media_url} alt={item.title} className="w-full h-auto" />
-            )}
-            <h2 className="text-lg font-semibold mt-2">{item.title}</h2>
-            <p>{item.description}</p>
-            <button
-              onClick={() => handleDelete(item.id)}
-              className="text-red-500 mt-2"
-            >
-              Delete
-            </button>
-          </div>
-        ))}
+        {Array.isArray(items) &&
+          items.map((item) => (
+            <div key={item.id} className="border p-4">
+              {item.media_url.includes(".mp4") ? (
+                <video src={item.media_url} controls className="w-full h-auto" />
+              ) : (
+                <img
+                  src={item.media_url}
+                  alt={item.title}
+                  className="w-full h-auto"
+                />
+              )}
+              <h2 className="text-lg font-semibold mt-2">{item.title}</h2>
+              <p>{item.description}</p>
+              <button
+                onClick={() => handleDelete(item.id)}
+                className="text-red-500 mt-2"
+              >
+                Delete
+              </button>
+            </div>
+          ))}
       </div>
     </div>
   );
