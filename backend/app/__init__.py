@@ -45,7 +45,8 @@ def create_app():
     migrate.init_app(app, db)
     mail.init_app(app)
 
-    # ✅ CORS Fix: allow only Vercel and localhost
+    # === CORS Setup ===
+    # Allow only your frontend origin and localhost (for local dev)
     CORS(app, resources={r"/api/*": {"origins": [
         "https://editscape-org.vercel.app",
         "http://localhost:3000"
