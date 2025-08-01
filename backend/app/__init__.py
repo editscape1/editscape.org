@@ -96,4 +96,13 @@ def create_app():
         with app.app_context():
             db.create_all()
 
+    # === Global CORS headers fix (important for Render) ===
+    @app.after_request
+    def apply_cors_headers(response):
+        response.headers["Access-Control-Allow-Origin"] = "https://editscape-org.vercel.app"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        return response
+
     return app
