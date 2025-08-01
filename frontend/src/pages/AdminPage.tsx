@@ -57,58 +57,64 @@ const AdminPage = () => {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-4">Admin Panel</h1>
+    <div className="p-6 bg-gray-50 min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-center">Admin Panel</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4 mb-6">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 max-w-xl bg-white p-6 border rounded-xl shadow-md mx-auto mb-10"
+      >
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Title"
-          className="border p-2 w-full"
+          className="border border-gray-300 p-2 rounded"
           required
         />
         <input
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Description"
-          className="border p-2 w-full"
+          className="border border-gray-300 p-2 rounded"
           required
         />
         <input
           value={mediaUrl}
           onChange={(e) => setMediaUrl(e.target.value)}
           placeholder="Cloudinary Image/Video URL"
-          className="border p-2 w-full"
+          className="border border-gray-300 p-2 rounded"
           required
         />
         <button
           type="submit"
-          className="bg-black text-white px-4 py-2"
-          style={{ cursor: "pointer" }}
+          className="bg-black text-white py-2 px-4 rounded hover:bg-gray-900 transition"
         >
           Upload
         </button>
       </form>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
         {Array.isArray(items) &&
           items.map((item) => (
-            <div key={item.id} className="border p-4">
+            <div key={item.id} className="bg-white border rounded-xl p-4 shadow-md">
               {item.media_url.includes(".mp4") ? (
-                <video src={item.media_url} controls className="w-full h-auto" />
+                <video
+                  src={item.media_url}
+                  controls
+                  className="w-full h-60 object-cover rounded"
+                />
               ) : (
                 <img
                   src={item.media_url}
                   alt={item.title}
-                  className="w-full h-auto"
+                  className="w-full h-60 object-cover rounded"
                 />
               )}
-              <h2 className="text-lg font-semibold mt-2">{item.title}</h2>
-              <p>{item.description}</p>
+              <h2 className="text-lg font-semibold mt-3">{item.title}</h2>
+              <p className="text-gray-600">{item.description}</p>
               <button
                 onClick={() => handleDelete(item.id)}
-                className="text-red-500 mt-2"
+                className="text-red-500 mt-2 hover:underline"
               >
                 Delete
               </button>
