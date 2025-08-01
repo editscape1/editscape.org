@@ -35,7 +35,6 @@ def create_app():
         MAIL_DEFAULT_SENDER=os.getenv("MAIL_DEFAULT_SENDER", ""),
     )
 
-    # ✅ Debug prints
     print("✅ ENV FILE FOUND?", os.getenv("SECRET_KEY") is not None)
     print("📧 MAIL_DEFAULT_SENDER:", app.config["MAIL_DEFAULT_SENDER"])
     print("🗃️ SQLALCHEMY_DATABASE_URI:", app.config["SQLALCHEMY_DATABASE_URI"])
