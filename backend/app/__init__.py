@@ -92,4 +92,10 @@ def create_app():
     # === Run migrations endpoint (for Render) ===
     @app.route('/run-migrations', methods=['GET'])
     def run_migrations():
-        try
+        try:
+            upgrade()
+            return jsonify({"message": "✅ Migrations applied successfully!"}), 200
+        except Exception as e:
+            return jsonify({"error": f"❌ Failed to apply migrations: {str(e)}"}), 500
+
+    return app
