@@ -48,7 +48,7 @@ def create_app():
     from app.models import PortfolioItem, ContactMessage
 
     # === Register Blueprints ===
-    from app.portfolio import portfolio_bp
+    from backend.portfolio.routes import portfolio_bp
     from app.contact import contact_bp
     from app.admin import admin_bp
 
@@ -66,7 +66,6 @@ def create_app():
         }
     })
 
-    # === Ensure CORS headers on all responses ===
     @app.after_request
     def after_request(response):
         response.headers.add("Access-Control-Allow-Origin", "https://editscape-org.vercel.app")
