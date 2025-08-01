@@ -1,3 +1,4 @@
+from flask_cors import cross_origin
 from flask import Blueprint, request, jsonify
 from app.extensions import db
 from app.models import PortfolioItem
@@ -9,6 +10,10 @@ portfolio_bp = Blueprint('portfolio', __name__)
 
 # === GET All Portfolio Items ===
 @portfolio_bp.route('/', methods=['GET'])
+@cross_origin(
+    origins=["https://editscape-org.vercel.app", "http://localhost:3000"],
+    supports_credentials=True
+)
 def get_portfolio():
     try:
         items = PortfolioItem.query.order_by(PortfolioItem.created_at.desc()).all()
@@ -26,18 +31,14 @@ def get_portfolio():
         traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
-# === OPTIONS (CORS Preflight) ===
-@portfolio_bp.route('/', methods=['OPTIONS'])
-def handle_options():
-    response = jsonify({})
-    response.headers.add("Access-Control-Allow-Origin", "https://editscape-org.vercel.app")
-    response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization, x-api-key")
-    response.headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-    response.headers.add("Access-Control-Allow-Credentials", "true")
-    return response, 200
-
 # === POST (Add Item) ===
 @portfolio_bp.route('/', methods=['POST'])
+@cross_origin(
+    origins=["https://editscape-org.vercel.app", "http://localhost:3000"],
+    supports_credentials=True,
+    methods=["POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "x-api-key"]
+)
 def add_portfolio():
     api_key = request.headers.get('x-api-key')
     admin_api_key = os.getenv('ADMIN_API_KEY')
@@ -66,6 +67,12 @@ def add_portfolio():
 
 # === PUT (Edit Item) ===
 @portfolio_bp.route('/<int:item_id>', methods=['PUT'])
+@cross_origin(
+    origins=["https://editscape-org.vercel.app", "http://localhost:3000"],
+    supports_credentials=True,
+    methods=["PUT", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "x-api-key"]
+)
 def edit_portfolio(item_id):
     item = PortfolioItem.query.get_or_404(item_id)
     data = request.get_json()
@@ -84,6 +91,12 @@ def edit_portfolio(item_id):
 
 # === DELETE (Remove Item) ===
 @portfolio_bp.route('/<int:item_id>', methods=['DELETE'])
+@cross_origin(
+    origins=["https://editscape-org.vercel.app", "http://localhost:3000"],
+    supports_credentials=True,
+    methods=["DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "x-api-key"]
+)
 def delete_portfolio(item_id):
     item = PortfolioItem.query.get_or_404(item_id)
     try:
