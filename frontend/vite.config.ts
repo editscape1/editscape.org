@@ -22,4 +22,21 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // ✅ Add this
+  build: {
+    outDir: "dist"
+  },
+  // ✅ Add this
+  preview: {
+    port: 4173,
+    host: true
+  },
+  // ✅ Add this
+  optimizeDeps: {
+    include: []
+  },
+  // ✅ MOST IMPORTANT FOR VERCEL
+  // This will enable fallback to index.html for any unknown route like /admin
+  // Works for both dev and production
+  appType: "spa"
 }));
