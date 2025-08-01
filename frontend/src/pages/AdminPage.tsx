@@ -8,6 +8,9 @@ type PortfolioItem = {
   media_url: string;
 };
 
+// 🔗 Use your actual Render backend URL
+const BACKEND_URL = "https://editscape-backend.onrender.com";
+
 const AdminPage = () => {
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [title, setTitle] = useState("");
@@ -21,11 +24,11 @@ const AdminPage = () => {
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get("/api/portfolio");
+      const res = await axios.get(`${BACKEND_URL}/api/portfolio`);
       const data = Array.isArray(res.data) ? res.data : res.data.portfolio || [];
       setItems(data);
     } catch (error) {
-      console.error("Error fetching portfolio items:", error);
+      console.error("❌ Error fetching portfolio items:", error);
       setItems([]);
     }
   };
@@ -33,25 +36,27 @@ const AdminPage = () => {
   // Submit a new item
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("📤 Uploading:", { title, description, mediaUrl });
+
     try {
       const newItem = { title, description, media_url: mediaUrl };
-      await axios.post("/api/portfolio", newItem);
+      await axios.post(`${BACKEND_URL}/api/portfolio`, newItem);
       await fetchItems(); // Refresh the list
       setTitle("");
       setDescription("");
       setMediaUrl("");
     } catch (error) {
-      console.error("Error uploading item:", error);
+      console.error("❌ Error uploading item:", error);
     }
   };
 
   // Delete an item
   const handleDelete = async (id: number) => {
     try {
-      await axios.delete(`/api/portfolio/${id}`);
+      await axios.delete(`${BACKEND_URL}/api/portfolio/${id}`);
       setItems((prev) => prev.filter((item) => item.id !== id));
     } catch (error) {
-      console.error("Error deleting item:", error);
+      console.error("❌ Error deleting item:", error);
     }
   };
 
