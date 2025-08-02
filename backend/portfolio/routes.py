@@ -1,10 +1,11 @@
 from flask import Blueprint, jsonify
 from app.utils.read_sheet import get_active_portfolio_items
 
-# Blueprint named 'portfolio_bp' with no URL prefix here
-portfolio_bp = Blueprint("portfolio_bp", __name__)
+# Define the Blueprint
+portfolio_bp = Blueprint("portfolio", __name__)
 
-@portfolio_bp.route("/", methods=["GET"])
+# Route: /api/portfolio
+@portfolio_bp.route("/portfolio", methods=["GET"])
 def get_portfolio_items():
     try:
         data = get_active_portfolio_items()
