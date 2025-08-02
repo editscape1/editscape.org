@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
 import ProgressBarWithWave from './ProgressBarWithWave';
 import { apiService, PortfolioItem } from '@/services/api';
 
-// Sample fallback data
+// Fallback sample data
 const samplePortfolioItems: PortfolioItem[] = [
   {
     id: 1,
@@ -33,7 +32,6 @@ export const Portfolio = () => {
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState<PortfolioItem[] | null>(null);
   const [loaderDuration, setLoaderDuration] = useState(4000);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!showPortfolio) return;
@@ -41,7 +39,6 @@ export const Portfolio = () => {
     let didCancel = false;
     setItems(null);
     setLoading(false);
-    setError(null);
 
     const delay = Math.random() < 0.5 ? 80 : 1200;
     let loaderTimeout: NodeJS.Timeout;
@@ -49,7 +46,7 @@ export const Portfolio = () => {
 
     const fetchPortfolio = async () => {
       try {
-        const portfolioItems = await apiService.getPortfolio(); // ✅ Corrected
+        const portfolioItems = await apiService.getPortfolio(); // From Google Sheets
         if (!didCancel) {
           setItems(portfolioItems);
           setLoading(false);
@@ -155,7 +152,7 @@ export const Portfolio = () => {
                       <h3 className="text-2xl font-bold text-white mb-2 tracking-wider">
                         {item.title}
                       </h3>
-                      <p className="text-gray-350 text-[13px] leading-relaxed">
+                      <p className="text-gray-300 text-[13px] leading-relaxed whitespace-pre-line">
                         {item.description}
                       </p>
                     </div>
