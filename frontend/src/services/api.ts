@@ -39,8 +39,8 @@ class ApiService {
 
   // Portfolio endpoints
   async getPortfolio(): Promise<PortfolioItem[]> {
-    return this.request<PortfolioItem[]>('/api/portfolio/');
-  }
+  return this.request<PortfolioItem[]>('/api/portfolio-sheet/');
+}
 
   async addPortfolioItem(item: Omit<PortfolioItem, 'id' | 'created_at'>, apiKey: string): Promise<{ message: string; id: number }> {
     return this.request<{ message: string; id: number }>('/api/portfolio/', {
