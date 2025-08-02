@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 from app.extensions import db, mail
 
-# === Load environment variables from .env ===
+# === Load environment variables ===
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 # === Flask Migrate Setup ===
@@ -45,30 +45,24 @@ def create_app():
     from app.models import PortfolioItem, ContactMessage
 
     # === Register Blueprints ===
-    from app.portfolio import portfolio_bp  # ✅ Corrected
+    from app.portfolio import portfolio_bp
     from app.contact import contact_bp
     from app.admin import admin_bp
 
-    app.register_blueprint(portfolio_bp, url_prefix="/api")  # ✅ Mounts /sheet and / endpoints
+    app.register_blueprint(portfolio_bp, url_prefix="/api/portfolio-sheet")
     app.register_blueprint(contact_bp, url_prefix="/api/contact")
     app.register_blueprint(admin_bp)
 
     # === CORS Setup ===
-    CORS(app, supports_credentials=True, resources={
-        r"/api/*": {
-            "origins": [
-                "https://editscape-org.vercel.app",
-                "http://localhost:3000"
-            ]
-        }
-    })
+    CORS(app, supports_credentials=True)
 
     @app.after_request
     def after_request(response):
-        response.headers.add("Access-Control-Allow-Origin", "https://editscape-org.vercel.app")
-        response.headers.add("Access-Control-Allow-Credentials", "true")
-        response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization,X-Requested-With,x-api-key")
-        response.headers.add("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
+        origin = os.environ.get("FRONTEND_ORIGIN", "https://editscape-org.vercel.app")
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization,X-Requested-With,x-api-key"
+        response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
         return response
 
     # === Serve React Frontend ===
@@ -80,12 +74,12 @@ def create_app():
             return send_from_directory(app.static_folder, path)
         return send_from_directory(app.static_folder, "index.html")
 
-    # === Health check ===
+    # === Health Check ===
     @app.route("/test")
     def test():
         return jsonify({"message": "Backend is working!"})
 
-    # === Run migrations endpoint (for Render) ===
+    # === Run Migrations on Render ===
     @app.route('/run-migrations', methods=['GET'])
     def run_migrations():
         try:
