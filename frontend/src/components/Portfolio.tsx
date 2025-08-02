@@ -49,9 +49,8 @@ export const Portfolio = () => {
 
     const fetchPortfolio = async () => {
       try {
-        const portfolioResponse = await apiService.getPortfolio();
+        const portfolioItems = await apiService.getPortfolio(); // ✅ Corrected
         if (!didCancel) {
-          const portfolioItems = portfolioResponse.data; // ✅ Fix is here
           setItems(portfolioItems);
           setLoading(false);
         }
@@ -127,11 +126,8 @@ export const Portfolio = () => {
                           preload="metadata"
                           className="w-full h-[300px] object-contain cursor-pointer"
                           onClick={(e) => {
-                            if ((e.target as HTMLVideoElement).paused) {
-                              (e.target as HTMLVideoElement).play();
-                            } else {
-                              (e.target as HTMLVideoElement).pause();
-                            }
+                            const video = e.target as HTMLVideoElement;
+                            video.paused ? video.play() : video.pause();
                           }}
                           onEnded={(e) =>
                             (e.target as HTMLVideoElement).pause()
