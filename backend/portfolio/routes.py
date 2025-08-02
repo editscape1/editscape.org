@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from backend.read_sheet import get_active_portfolio_items  # ✅ Correct absolute import
+from app.utils.read_sheet import get_active_portfolio_items  # ✅ Correct
 
 portfolio_bp = Blueprint("portfolio", __name__)
 

@@ -4,7 +4,6 @@ from flask_migrate import Migrate, upgrade
 from flask_cors import CORS
 from dotenv import load_dotenv
 
-from app.utils import setup_logging
 from app.extensions import db, mail
 
 # === Load environment variables from .env ===
@@ -14,8 +13,6 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
 migrate = Migrate()
 
 def create_app():
-    setup_logging()
-
     app = Flask(
         __name__,
         static_folder="public",
@@ -48,11 +45,11 @@ def create_app():
     from app.models import PortfolioItem, ContactMessage
 
     # === Register Blueprints ===
-    from backend.portfolio.routes import portfolio_bp  # Use the backend version with Google Sheets
+    from portfolio.routes import portfolio_bp  # ✅ Correct import based on structure
     from app.contact import contact_bp
     from app.admin import admin_bp
 
-    app.register_blueprint(portfolio_bp, url_prefix="/api/portfolio")
+    app.register_blueprint(portfolio_bp, url_prefix="/api/portfolio-sheet")
     app.register_blueprint(contact_bp, url_prefix="/api/contact")
     app.register_blueprint(admin_bp)
 
@@ -66,12 +63,11 @@ def create_app():
         }
     })
 
-    # === Ensure CORS headers on all responses ===
     @app.after_request
     def after_request(response):
         response.headers.add("Access-Control-Allow-Origin", "https://editscape-org.vercel.app")
         response.headers.add("Access-Control-Allow-Credentials", "true")
-        response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization,X-Requested-With")
+        response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization,X-Requested-With,x-api-key")
         response.headers.add("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
         return response
 

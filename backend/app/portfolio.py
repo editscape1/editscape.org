@@ -1,14 +1,15 @@
-from flask_cors import cross_origin
 from flask import Blueprint, request, jsonify
+from flask_cors import cross_origin
 from app.extensions import db
 from app.models import PortfolioItem
+from app.utils.read_sheet import get_active_portfolio_items
 from sqlalchemy.exc import SQLAlchemyError
 import os
 import traceback
 
 portfolio_bp = Blueprint('portfolio', __name__)
 
-# === GET All Portfolio Items ===
+# === GET All Portfolio Items from Database ===
 @portfolio_bp.route('/', methods=['GET'])
 @cross_origin(
     origins=["https://editscape-org.vercel.app", "http://localhost:3000"],
@@ -31,7 +32,7 @@ def get_portfolio():
         traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
-# === POST (Add Item) ===
+# === POST (Add Portfolio Item) ===
 @portfolio_bp.route('/', methods=['POST'])
 @cross_origin(
     origins=["https://editscape-org.vercel.app", "http://localhost:3000"],
@@ -65,7 +66,7 @@ def add_portfolio():
         traceback.print_exc()
         return jsonify({'error': 'Failed to add item.'}), 500
 
-# === PUT (Edit Item) ===
+# === PUT (Edit Portfolio Item) ===
 @portfolio_bp.route('/<int:item_id>', methods=['PUT'])
 @cross_origin(
     origins=["https://editscape-org.vercel.app", "http://localhost:3000"],
@@ -89,7 +90,7 @@ def edit_portfolio(item_id):
         traceback.print_exc()
         return jsonify({'error': 'Failed to update item.'}), 500
 
-# === DELETE (Remove Item) ===
+# === DELETE (Remove Portfolio Item) ===
 @portfolio_bp.route('/<int:item_id>', methods=['DELETE'])
 @cross_origin(
     origins=["https://editscape-org.vercel.app", "http://localhost:3000"],
@@ -107,3 +108,17 @@ def delete_portfolio(item_id):
         db.session.rollback()
         traceback.print_exc()
         return jsonify({'error': 'Failed to delete item.'}), 500
+
+# === GET Portfolio Items from Google Sheet ===
+@portfolio_bp.route('/sheet', methods=['GET'])  # ✅ Corrected URL path
+@cross_origin(
+    origins=["https://editscape-org.vercel.app", "http://localhost:3000"],
+    supports_credentials=True
+)
+def get_sheet_portfolio():
+    try:
+        items = get_active_portfolio_items()
+        return jsonify(items), 200
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': 'Failed to fetch items from Google Sheet'}), 500
