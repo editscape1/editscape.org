@@ -45,11 +45,11 @@ def create_app():
     from app.models import PortfolioItem, ContactMessage
 
     # === Register Blueprints ===
-    from portfolio.routes import portfolio_bp  # ✅ Correct import based on structure
+    from app.portfolio import portfolio_bp  # ✅ Corrected
     from app.contact import contact_bp
     from app.admin import admin_bp
 
-    app.register_blueprint(portfolio_bp, url_prefix="/api/portfolio-sheet")
+    app.register_blueprint(portfolio_bp, url_prefix="/api")  # ✅ Mounts /sheet and / endpoints
     app.register_blueprint(contact_bp, url_prefix="/api/contact")
     app.register_blueprint(admin_bp)
 
