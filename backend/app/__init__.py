@@ -49,17 +49,20 @@ def create_app():
     from app.contact import contact_bp
     from app.admin import admin_bp
 
-    app.register_blueprint(portfolio_bp, url_prefix="/api/portfolio-sheet")
+    app.register_blueprint(portfolio_bp, url_prefix="/api/portfolio")
     app.register_blueprint(contact_bp, url_prefix="/api/contact")
     app.register_blueprint(admin_bp)
 
     # === CORS Setup ===
-    CORS(app, supports_credentials=True)
+    FRONTEND_ORIGIN = os.environ.get("FRONTEND_ORIGIN", "https://editscape-org.vercel.app")
+
+    CORS(app, resources={
+        r"/api/*": {"origins": [FRONTEND_ORIGIN]}
+    }, supports_credentials=True)
 
     @app.after_request
     def after_request(response):
-        origin = os.environ.get("FRONTEND_ORIGIN", "https://editscape-org.vercel.app")
-        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Origin"] = FRONTEND_ORIGIN
         response.headers["Access-Control-Allow-Credentials"] = "true"
         response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization,X-Requested-With,x-api-key"
         response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
