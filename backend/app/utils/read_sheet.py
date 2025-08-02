@@ -1,24 +1,29 @@
-from app.utils.sheets_utils import get_google_sheet
-
 def get_active_portfolio_items():
-    try:
-        # Pass both the spreadsheet name and tab name
-        worksheet = get_google_sheet("Editscape Portfolio Admin", "Sheet1")
-        data = worksheet.get_all_records()  # ✅ FIXED: changed from `sheet` to `worksheet`
-        active_items = [
-            item for item in data
-            if item.get("Status", "").strip().lower() == "active"
-        ]
-        return active_items
-    except Exception as e:
-        print(f"❌ Error reading sheet: {e}")
+    from app.utils.google import service, SHEET_ID  # Ensure these are correctly imported
+
+    sheet = service.spreadsheets().values().get(
+        spreadsheetId=SHEET_ID,
+        range="Sheet1"
+    ).execute()
+
+    values = sheet.get("values", [])
+    if not values or len(values) < 2:
         return []
 
-if __name__ == "__main__":
-    items = get_active_portfolio_items()
-    if items:
-        print("✅ Active Portfolio Items:")
-        for i, item in enumerate(items, start=1):
-            print(f"{i}. {item}")
-    else:
-        print("⚠️ No active items found or failed to read sheet.")
+    header = values[0]
+    data_rows = values[1:]
+
+    result = []
+    for row in data_rows:
+        item = {header[i].strip().lower(): row[i] if i < len(row) else "" for i in range(len(header))}
+
+        if item.get("status", "").lower() == "active":
+            result.append({
+                "id": item.get("id", ""),
+                "title": item.get("title", ""),
+                "description": item.get("description", ""),
+                "mediaUrl": item.get("mediaurl", ""),
+                "type": item.get("type", ""),
+            })
+
+    return result
