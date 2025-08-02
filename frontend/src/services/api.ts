@@ -37,12 +37,16 @@ class ApiService {
     return response.json();
   }
 
-  // Portfolio endpoints
+  // ✅ Fixed: extract `.data` array from response
   async getPortfolio(): Promise<PortfolioItem[]> {
-  return this.request<PortfolioItem[]>('/api/portfolio-sheet/');
-}
+    const response = await this.request<{ data: PortfolioItem[] }>('/api/portfolio-sheet/');
+    return response.data;
+  }
 
-  async addPortfolioItem(item: Omit<PortfolioItem, 'id' | 'created_at'>, apiKey: string): Promise<{ message: string; id: number }> {
+  async addPortfolioItem(
+    item: Omit<PortfolioItem, 'id' | 'created_at'>,
+    apiKey: string
+  ): Promise<{ message: string; id: number }> {
     return this.request<{ message: string; id: number }>('/api/portfolio/', {
       method: 'POST',
       headers: {
@@ -52,7 +56,11 @@ class ApiService {
     });
   }
 
-  async updatePortfolioItem(id: number, item: Partial<PortfolioItem>, apiKey: string): Promise<{ message: string }> {
+  async updatePortfolioItem(
+    id: number,
+    item: Partial<PortfolioItem>,
+    apiKey: string
+  ): Promise<{ message: string }> {
     return this.request<{ message: string }>(`/api/portfolio/${id}`, {
       method: 'PUT',
       headers: {
@@ -71,7 +79,6 @@ class ApiService {
     });
   }
 
-  // Contact endpoints
   async sendContactMessage(message: ContactMessage): Promise<{ message: string }> {
     return this.request<{ message: string }>('/api/contact/', {
       method: 'POST',
