@@ -26,12 +26,14 @@ class ContactMessageModelView(ModelView):
 
     page_size = 20
 
-    # ✅ Virtual serial number column based on row index
+    # ✅ Safe serial number formatter using context
     def _sr_no_formatter(self, context, model, name):
-        page = int(request.args.get('page', 0))
-        data, _ = self.get_list(0, 0, None, None, None)
-        index = data.index(model)
-        return page * self.page_size + index + 1
+        try:
+            row_index = context.get('list_row', 0)
+            page = int(request.args.get('page', 0))
+            return page * self.page_size + row_index + 1
+        except Exception:
+            return '-'
 
     column_formatters = {
         'sr_no': _sr_no_formatter
