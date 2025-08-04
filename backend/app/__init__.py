@@ -45,7 +45,7 @@ def create_app():
     from app.models import PortfolioItem, ContactMessage
 
     # === Register Blueprints ===
-    from app.portfolio import portfolio_bp
+    from app.portfolio.routes import portfolio_bp
     from app.contact import contact_bp
     from app.admin import admin_bp
 
