@@ -1,29 +1,45 @@
 from flask_admin import Admin, expose, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
-from wtforms import BooleanField  # ✅ Needed for checkbox field
+from wtforms import BooleanField
+from flask import request
 from app.extensions import db
 from app.models import ContactMessage
 
 
 class ContactMessageModelView(ModelView):
     can_create = False
-    can_edit = True  # ✅ Allow editing "responded"
+    can_edit = True
     can_delete = True
 
-    column_list = ("id", "name", "email", "message", "timestamp", "responded")
+    column_list = ("serial_number", "name", "email", "message", "timestamp", "responded")
     column_sortable_list = ("id", "timestamp", "responded")
     column_searchable_list = ("name", "email", "message")
     column_default_sort = ("timestamp", True)
 
-    column_display_pk = True
-    column_editable_list = ['responded']  # ✅ Make "responded" directly editable from list view
-    form_columns = ("responded",)  # ✅ Only allow "responded" field to be edited
+    column_display_pk = False  # Don't show internal ID anymore
+    column_editable_list = ['responded']
+    form_columns = ("responded",)
 
     form_overrides = {
-        'responded': BooleanField  # ✅ Use checkbox UI
+        'responded': BooleanField
     }
 
     page_size = 20
+
+    # ✅ Virtual column for serial number
+    def _serial_number(view, context, model, name):
+        # Calculate current page and row number
+        page = int(request.args.get('page', 0))
+        idx = view.get_list(0, view.page_size, None, None, None)[0].index(model)
+        return page * view.page_size + idx + 1
+
+    column_formatters = {
+        'serial_number': _serial_number
+    }
+
+    column_labels = {
+        'serial_number': 'Sr. No.'
+    }
 
 
 class MyAdminIndexView(AdminIndexView):
