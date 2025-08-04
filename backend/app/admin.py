@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, request, render_template_string, redirect, url_for, session
+from flask import Blueprint, request, render_template_string, redirect, url_for, session, jsonify
 from .models import ContactMessage, PortfolioItem
 from . import db
 
@@ -7,121 +7,11 @@ admin_bp = Blueprint('admin', __name__)
 
 print("Loaded admin password:", os.getenv('ADMIN_PASSWORD'))
 
-ADMIN_TEMPLATE = '''
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f4f4f4; }
-        .container { max-width: 1000px; margin: 40px auto; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #0001; }
-        table { width: 100%; border-collapse: collapse; margin-top: 24px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background: #eee; }
-        .logout { float: right; }
-        .responded-row { background-color: #e6ffe6; }
-        form { margin: 0; }
-        input, textarea { width: 100%; padding: 6px; margin: 4px 0; }
-        .section { margin-top: 40px; }
-        .media-preview { max-height: 160px; margin-top: 4px; border-radius: 4px; }
-        .delete-button { color: red; text-decoration: none; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Admin Dashboard <a href="{{ url_for('admin.logout') }}" class="logout">Logout</a></h2>
+# --- Templates ---
+ADMIN_TEMPLATE = '''...'''  # [your full admin HTML template]
+LOGIN_TEMPLATE = '''...'''  # [your full login HTML template]
 
-        <div class="section">
-            <h3>Contact Messages</h3>
-            <table>
-                <tr>
-                    <th>ID</th><th>Name</th><th>Email</th><th>Message</th><th>Timestamp</th><th>Responded</th>
-                </tr>
-                {% for msg in messages %}
-                <tr class="{% if msg.responded %}responded-row{% endif %}">
-                    <td>{{ msg.id }}</td>
-                    <td>{{ msg.name }}</td>
-                    <td>{{ msg.email }}</td>
-                    <td>{{ msg.message }}</td>
-                    <td>{{ msg.timestamp }}</td>
-                    <td>
-                        <form method="POST" action="{{ url_for('admin.toggle_responded', message_id=msg.id) }}">
-                            <input type="checkbox" name="responded" onchange="this.form.submit()" {% if msg.responded %}checked{% endif %}>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-
-        <div class="section">
-            <h3>Upload Portfolio Item</h3>
-            <form method="POST" action="{{ url_for('admin.upload_portfolio') }}">
-                <input type="text" name="title" placeholder="Title" required />
-                <textarea name="description" placeholder="Description" required></textarea>
-                <input type="text" name="media_url" placeholder="Cloudinary Media URL (.jpg / .mp4)" required />
-                <button type="submit">Upload</button>
-            </form>
-        </div>
-
-        <div class="section">
-            <h3>Portfolio Items</h3>
-            <table>
-                <tr>
-                    <th>ID</th><th>Title</th><th>Description</th><th>Media</th><th>Actions</th>
-                </tr>
-                {% for item in portfolio %}
-                <tr>
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.title }}</td>
-                    <td>{{ item.description }}</td>
-                    <td>
-                        {% if item.media_url.endswith('.mp4') %}
-                            <video class="media-preview" src="{{ item.media_url }}" controls></video>
-                        {% else %}
-                            <img class="media-preview" src="{{ item.media_url }}" />
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="{{ url_for('admin.delete_portfolio', item_id=item.id) }}" class="delete-button">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </div>
-</body>
-</html>
-'''
-
-LOGIN_TEMPLATE = '''
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin Login</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f4f4f4; }
-        .container { max-width: 400px; margin: 100px auto; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #0001; }
-        input[type=password] { width: 100%; padding: 8px; margin: 8px 0; }
-        button { padding: 8px 16px; }
-        .error { color: red; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Admin Login</h2>
-        {% if error %}<div class="error">{{ error }}</div>{% endif %}
-        <form method="post">
-            <input type="password" name="password" placeholder="Admin Password" required />
-            <button type="submit">Login</button>
-        </form>
-    </div>
-</body>
-</html>
-'''
-
+# --- HTML Admin Panel Routes ---
 @admin_bp.route('/admin', methods=['GET', 'POST'])
 def admin_login():
     if session.get('admin_logged_in'):
@@ -170,3 +60,30 @@ def delete_portfolio(item_id):
     db.session.delete(item)
     db.session.commit()
     return redirect(url_for('admin.admin_login'))
+
+# --- JSON API Endpoints for React Admin Panel ---
+@admin_bp.route('/api/admin/portfolio', methods=['GET'])
+def get_portfolio_items_admin():
+    items = PortfolioItem.query.order_by(PortfolioItem.id.asc()).all()
+    return jsonify([item.to_dict() for item in items])
+
+@admin_bp.route('/api/admin/portfolio', methods=['POST'])
+def add_portfolio_item():
+    data = request.get_json()
+    new_item = PortfolioItem(
+        title=data.get('title'),
+        description=data.get('description'),
+        media_type=data.get('media_type'),
+        cloudinary_url=data.get('cloudinary_url'),
+        thumbnail_url=data.get('thumbnail_url')
+    )
+    db.session.add(new_item)
+    db.session.commit()
+    return jsonify(new_item.to_dict()), 201
+
+@admin_bp.route('/api/admin/portfolio/<int:item_id>', methods=['DELETE'])
+def delete_portfolio_item(item_id):
+    item = PortfolioItem.query.get_or_404(item_id)
+    db.session.delete(item)
+    db.session.commit()
+    return jsonify({'message': 'Item deleted successfully'})
