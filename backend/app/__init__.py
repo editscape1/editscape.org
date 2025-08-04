@@ -47,13 +47,12 @@ def create_app():
     # === Register Blueprints ===
     from app.portfolio.routes import portfolio_bp
     from app.contact import contact_bp
-    from app.admin import admin_bp, setup_admin  # ✅ include setup_admin
+    from app.admin import setup_admin  # ✅ only import setup_admin
 
     app.register_blueprint(portfolio_bp, url_prefix="/api/portfolio")
     app.register_blueprint(contact_bp, url_prefix="/api/contact")
-    app.register_blueprint(admin_bp)  # Admin routes
 
-    setup_admin(app)  # ✅ Enable admin panel with only ContactMessage
+    setup_admin(app)  # ✅ Set up the admin panel (ContactMessage only)
 
     # === CORS Setup ===
     FRONTEND_ORIGIN = os.environ.get("FRONTEND_ORIGIN", "https://editscape-org.vercel.app")
