@@ -18,7 +18,7 @@ const samplePortfolioItems: PortfolioItem[] = [
   },
   {
     id: 2,
-    title: 'Strawberry Sundae Commercial Edit',
+    title: 'Sundae Commercial Edit',
     description:
       'A vibrant, high-energy edit featuring sharp cuts, fluid transitions, and rhythmic pacing. The color grade enhances sweetness and summer vibes, while motion design adds a playful punch—crafted to keep viewers visually engaged from start to finish.',
     image_url:
