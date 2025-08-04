@@ -1,15 +1,21 @@
 {
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.editscape.co.in"
+        }
+      ],
+      "destination": "https://editscape.co.in/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
       "destination": "/index.html"
-    }
-  ],
-  "redirects": [
-    {
-      "source": "https://www.editscape.co.in/:path*",
-      "destination": "https://editscape.co.in/:path*",
-      "permanent": true
     }
   ]
 }
