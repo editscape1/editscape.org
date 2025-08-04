@@ -5,6 +5,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 
 from app.extensions import db, mail
+from app.admin import setup_admin  # ✅ Added this line
 
 # === Load environment variables ===
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
@@ -52,6 +53,9 @@ def create_app():
     app.register_blueprint(portfolio_bp, url_prefix="/api/portfolio")
     app.register_blueprint(contact_bp, url_prefix="/api/contact")
     app.register_blueprint(admin_bp)  # Admin blueprint with no prefix
+
+    # ✅ Setup Flask-Admin views
+    setup_admin(app)
 
     # === CORS Setup ===
     FRONTEND_ORIGIN = os.environ.get("FRONTEND_ORIGIN", "https://editscape-org.vercel.app")
