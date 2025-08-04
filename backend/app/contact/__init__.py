@@ -67,3 +67,21 @@ def submit_contact():
         db.session.rollback()
         logging.error(f"❌ Error saving contact message: {e}")
         return jsonify({"error": "Something went wrong. Please try again later."}), 500
+
+
+# === Route: Delete Contact Message by ID ===
+@contact_bp.route("/<int:message_id>", methods=["DELETE"])
+def delete_contact_message(message_id):
+    """
+    DELETE /api/contact/<message_id>
+    - Deletes a contact message by ID
+    """
+    message = ContactMessage.query.get_or_404(message_id)
+    
+    try:
+        db.session.delete(message)
+        db.session.commit()
+        return jsonify({"message": f"✅ Contact message {message_id} deleted."}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"❌ Failed to delete message {message_id}. {str(e)}"}), 500
