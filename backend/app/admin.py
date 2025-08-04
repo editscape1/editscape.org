@@ -1,136 +1,47 @@
-from flask import Blueprint, render_template_string, request, redirect, url_for, session
-from app.models import ContactMessage
+from flask import redirect, url_for, request
+from flask_admin import Admin, expose, AdminIndexView
+from flask_admin.contrib.sqla import ModelView
+from flask_admin.form.upload import ImageUploadField
+from werkzeug.utils import secure_filename
+from flask_login import current_user
 from app.extensions import db
-import os
+from app.models import PortfolioItem
 
-admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
+class SecureModelView(ModelView):
+    can_create = True
+    can_edit = True
+    can_delete = True
+    column_display_pk = True
+    page_size = 10
 
-TEMPLATE = """
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin - Contact Messages</title>
-    <style>
-        body {
-            font-family: 'Arial';
-            background: #f9f9f9;
-            padding: 2rem;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        th, td {
-            padding: 0.75rem 1rem;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-        th {
-            background: #eee;
-        }
-        .container {
-            max-width: 1000px;
-            margin: auto;
-        }
-        h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        form.logout {
-            float: right;
-        }
-        form.delete-form {
-            display: inline;
-        }
-        .btn-delete {
-            color: white;
-            background-color: #d9534f;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-        .btn-delete:hover {
-            background-color: #c9302c;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        {% if not session.get('logged_in') %}
-            <h2>Admin Login</h2>
-            <form method="POST">
-                <input type="password" name="password" placeholder="Enter admin password" required />
-                <button type="submit">Login</button>
-            </form>
-        {% else %}
-            <h2>Contact Messages</h2>
-            <form action="{{ url_for('admin.logout') }}" method="POST" class="logout">
-                <button type="submit">Logout</button>
-            </form>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Message</th>
-                        <th>Timestamp</th>
-                        <th>Responded</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for msg in messages %}
-                    <tr>
-                        <td>{{ msg.id }}</td>
-                        <td>{{ msg.name }}</td>
-                        <td>{{ msg.email }}</td>
-                        <td>{{ msg.message }}</td>
-                        <td>{{ msg.timestamp }}</td>
-                        <td><input type="checkbox" {% if msg.responded %}checked{% endif %} disabled></td>
-                        <td>
-                            <form method="POST" action="{{ url_for('admin.delete_message', message_id=msg.id) }}" class="delete-form">
-                                <button type="submit" class="btn-delete">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-    </div>
-</body>
-</html>
-"""
+    column_list = ("id", "title", "description", "media_url", "media_type")
 
-@admin_bp.route("/", methods=["GET", "POST"])
-def admin():
-    if request.method == "POST" and not session.get("logged_in"):
-        password = request.form.get("password")
-        if password == ADMIN_PASSWORD:
-            session["logged_in"] = True
-        else:
-            return "Incorrect password", 403
+    form_columns = ("title", "description", "media_url", "media_type")
 
-    messages = ContactMessage.query.order_by(ContactMessage.id.asc()).all()
-    return render_template_string(TEMPLATE, messages=messages)
+    column_searchable_list = ("title", "description")
+    column_sortable_list = ("id", "title", "media_type")
 
-@admin_bp.route("/logout", methods=["POST"])
-def logout():
-    session.pop("logged_in", None)
-    return redirect(url_for("admin.admin"))
+    create_modal = True
+    edit_modal = True
 
-@admin_bp.route("/delete/<int:message_id>", methods=["POST"])
-def delete_message(message_id):
-    if not session.get("logged_in"):
-        return "Unauthorized", 403
+    # ✅ Optional override to customize how delete works
+    def delete_model(self, model):
+        try:
+            self.session.delete(model)
+            self.session.commit()
+            return True
+        except Exception as e:
+            self.session.rollback()
+            raise e
 
-    message = ContactMessage.query.get_or_404(message_id)
-    db.session.delete(message)
-    db.session.commit()
-    return redirect(url_for("admin.admin"))
+
+class MyAdminIndexView(AdminIndexView):
+    @expose('/')
+    def index(self):
+        return self.render('admin/index.html')
+
+
+def setup_admin(app):
+    admin = Admin(app, name='EDTISCAPE Admin', template_mode='bootstrap4', index_view=MyAdminIndexView())
+    admin.add_view(SecureModelView(PortfolioItem, db.session))
