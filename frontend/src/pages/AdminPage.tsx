@@ -23,8 +23,7 @@ const AdminPage = () => {
   const fetchItems = async () => {
     try {
       const res = await axios.get(`${BACKEND_URL}/api/portfolio`);
-      const data = Array.isArray(res.data) ? res.data : res.data.portfolio || [];
-      setItems(data);
+      setItems(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
       console.error("❌ Error fetching portfolio items:", error);
       setItems([]);
@@ -88,39 +87,37 @@ const AdminPage = () => {
         <button
           type="submit"
           className="bg-black text-white py-2 px-4 rounded hover:bg-gray-900 transition"
-          onClick={() => console.log("✅ Upload button clicked")}
         >
           Upload
         </button>
       </form>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
-        {Array.isArray(items) &&
-          items.map((item) => (
-            <div key={item.id} className="bg-white border rounded-xl p-4 shadow-md">
-              {item.media_url.includes(".mp4") ? (
-                <video
-                  src={item.media_url}
-                  controls
-                  className="w-full h-60 object-cover rounded"
-                />
-              ) : (
-                <img
-                  src={item.media_url}
-                  alt={item.title}
-                  className="w-full h-60 object-cover rounded"
-                />
-              )}
-              <h2 className="text-lg font-semibold mt-3">{item.title}</h2>
-              <p className="text-gray-600">{item.description}</p>
-              <button
-                onClick={() => handleDelete(item.id)}
-                className="text-red-500 mt-2 hover:underline"
-              >
-                Delete
-              </button>
-            </div>
-          ))}
+        {items.map((item) => (
+          <div key={item.id} className="bg-white border rounded-xl p-4 shadow-md">
+            {item.media_url.endsWith(".mp4") ? (
+              <video
+                src={item.media_url}
+                controls
+                className="w-full h-60 object-cover rounded"
+              />
+            ) : (
+              <img
+                src={item.media_url}
+                alt={item.title}
+                className="w-full h-60 object-cover rounded"
+              />
+            )}
+            <h2 className="text-lg font-semibold mt-3">{item.title}</h2>
+            <p className="text-gray-600">{item.description}</p>
+            <button
+              onClick={() => handleDelete(item.id)}
+              className="text-red-500 mt-2 hover:underline"
+            >
+              Delete
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );
