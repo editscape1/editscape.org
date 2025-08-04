@@ -1,8 +1,10 @@
+from flask_admin import Admin, expose, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from wtforms import BooleanField
 from flask import request
 from app.extensions import db
 from app.models import ContactMessage
+
 
 class ContactMessageModelView(ModelView):
     can_create = False
@@ -24,16 +26,9 @@ class ContactMessageModelView(ModelView):
 
     page_size = 20
 
-    def _sr_no_formatter(view, context, model, name):
-        # Hack: get current page number from query param
-        try:
-            page = int(request.args.get('page', 0))
-        except (TypeError, ValueError):
-            page = 0
-
-        # Use offset in query to calculate serial number
-        row_index = context.get('list_row_number', 0)
-        return page * view.page_size + row_index + 1
+    # ✅ This works and avoids crashing
+    def _sr_no_formatter(self, context, model, name):
+        return context.get('list_row_number') + 1  # Simple and stable
 
     column_formatters = {
         'sr_no': _sr_no_formatter
@@ -42,3 +37,19 @@ class ContactMessageModelView(ModelView):
     column_labels = {
         'sr_no': 'Sr. No.'
     }
+
+
+class MyAdminIndexView(AdminIndexView):
+    @expose('/')
+    def index(self):
+        return self.render('admin/index.html')
+
+
+def setup_admin(app):
+    admin = Admin(
+        app,
+        name='EDITSCAPE Admin',
+        template_mode='bootstrap4',
+        index_view=MyAdminIndexView()
+    )
+    admin.add_view(ContactMessageModelView(ContactMessage, db.session))
