@@ -26,9 +26,10 @@ class ContactMessageModelView(ModelView):
 
     page_size = 20
 
-    # ✅ This works and avoids crashing
+    # ✅ Safe serial number column based on list_row_number
     def _sr_no_formatter(self, context, model, name):
-        return context.get('list_row_number') + 1  # Simple and stable
+        list_row_number = context.get('list_row_number')
+        return list_row_number + 1 if list_row_number is not None else "–"
 
     column_formatters = {
         'sr_no': _sr_no_formatter
