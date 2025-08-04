@@ -9,7 +9,7 @@ const samplePortfolioItems: PortfolioItem[] = [
     id: 1,
     title: 'Pharmaceutical Product Edit',
     description:
-      'This visual edit was crafted to elevate a pharmaceutical product—Apo-RHEUM Joint Pain Drops—into a premium, high-impact advertisement...',
+      'A sleek, cinematic edit using dramatic lighting, sharp focus pulls, and dynamic splash effects. Every frame is crafted to feel high-end and impactful—highlighting precision, clarity, and visual intensity through polished motion and bold contrast.',
     image_url:
       'https://res.cloudinary.com/dijbpjech/image/upload/v1752495311/Image_ujkxqb.jpg',
     type: 'image',
@@ -31,7 +31,7 @@ const samplePortfolioItems: PortfolioItem[] = [
     id: 3,
     title: 'Alpino Super Oats Edit',
     description:
-      'This edit brings Alpino Oats to life with punchy motion, dynamic text reveals, and a bold visual rhythm...',
+      'A crisp commercial-style edit with tight pacing, bold motion graphics, and clean transitions. Built for digital ads, it blends energetic visuals with quick cuts and vibrant color grading to maximize viewer retention and brand recall.',
     image_url:
       'https://res.cloudinary.com/dijbpjech/video/upload/v1753683607/11g_Fibre_w4cvgz.mp4',
     type: 'video',
