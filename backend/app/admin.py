@@ -6,17 +6,24 @@ from app.extensions import db
 from app.models import ContactMessage
 
 
+# ✅ Function to generate serial number
+def _get_serial_number(view, context, model, index):
+    page = int(request.args.get('page', 0))
+    return page * view.page_size + index + 1
+
+
 class ContactMessageModelView(ModelView):
     can_create = False
     can_edit = True
     can_delete = True
 
-    column_list = ("serial_number", "name", "email", "message", "timestamp", "responded")
-    column_sortable_list = ("id", "timestamp", "responded")
+    # ✅ Add "Sr. No." as a virtual column
+    column_list = ("sr_no", "name", "email", "message", "timestamp", "responded")
+    column_sortable_list = ("timestamp", "responded")
     column_searchable_list = ("name", "email", "message")
     column_default_sort = ("timestamp", True)
 
-    column_display_pk = False  # Don't show internal ID anymore
+    column_display_pk = False  # Hide internal DB ID
     column_editable_list = ['responded']
     form_columns = ("responded",)
 
@@ -24,22 +31,17 @@ class ContactMessageModelView(ModelView):
         'responded': BooleanField
     }
 
-    page_size = 20
-
-    # ✅ Virtual column for serial number
-    def _serial_number(view, context, model, name):
-        # Calculate current page and row number
-        page = int(request.args.get('page', 0))
-        idx = view.get_list(0, view.page_size, None, None, None)[0].index(model)
-        return page * view.page_size + idx + 1
-
+    # ✅ Custom formatters
     column_formatters = {
-        'serial_number': _serial_number
+        'sr_no': _get_serial_number
     }
 
+    # ✅ Rename column header
     column_labels = {
-        'serial_number': 'Sr. No.'
+        'sr_no': 'Sr. No.'
     }
+
+    page_size = 20
 
 
 class MyAdminIndexView(AdminIndexView):
