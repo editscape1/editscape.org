@@ -51,7 +51,7 @@ def create_app():
 
     app.register_blueprint(portfolio_bp, url_prefix="/api/portfolio")
     app.register_blueprint(contact_bp, url_prefix="/api/contact")
-    app.register_blueprint(admin_bp)
+    app.register_blueprint(admin_bp)  # Admin blueprint with no prefix
 
     # === CORS Setup ===
     FRONTEND_ORIGIN = os.environ.get("FRONTEND_ORIGIN", "https://editscape-org.vercel.app")
