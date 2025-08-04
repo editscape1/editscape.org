@@ -19,24 +19,21 @@ class ContactMessageModelView(ModelView):
     column_display_pk = False
     column_editable_list = ['responded']
     form_columns = ("responded",)
-
     form_overrides = {
         'responded': BooleanField
     }
 
     page_size = 20
 
-    # ✅ Safe serial number formatter using context
-    def _sr_no_formatter(self, context, model, name):
-        try:
-            row_index = context.get('list_row', 0)
-            page = int(request.args.get('page', 0))
-            return page * self.page_size + row_index + 1
-        except Exception:
-            return '-'
+    # ✅ Inject serial number dynamically
+    def get_list(self, page, sort_field, sort_desc, search, filters, execute=True):
+        count, data = super().get_list(page, sort_field, sort_desc, search, filters, execute)
+        for i, item in enumerate(data):
+            item.sr_no = page * self.page_size + i + 1
+        return count, data
 
     column_formatters = {
-        'sr_no': _sr_no_formatter
+        'sr_no': lambda v, c, m, p: getattr(m, 'sr_no', '')
     }
 
     column_labels = {
