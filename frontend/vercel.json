@@ -4,5 +4,12 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
+  ],
+  "redirects": [
+    {
+      "source": "https://www.editscape.co.in/:path*",
+      "destination": "https://editscape.co.in/:path*",
+      "permanent": true
+    }
   ]
 }
