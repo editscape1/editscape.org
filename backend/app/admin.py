@@ -1,31 +1,22 @@
-from flask import redirect, url_for, request
-from flask_admin import Admin, expose, AdminIndexView
+from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
-from flask_admin.form.upload import ImageUploadField
-from werkzeug.utils import secure_filename
-from flask_login import current_user
+from flask import redirect, url_for, request
 from app.extensions import db
-from app.models import PortfolioItem
+from app.models import ContactMessage
 
 
-class SecureModelView(ModelView):
-    can_create = True
-    can_edit = True
-    can_delete = True
+class ContactMessageAdmin(ModelView):
+    can_create = False      # Disallow creating new entries
+    can_edit = False        # Disallow editing entries
+    can_delete = True       # ✅ Allow deleting entries
     column_display_pk = True
-    page_size = 10
+    page_size = 20
 
-    column_list = ("id", "title", "description", "media_url", "media_type")
+    column_list = ("id", "name", "email", "message", "timestamp", "responded")
+    column_filters = ("responded", "timestamp")
+    column_searchable_list = ("name", "email", "message")
 
-    form_columns = ("title", "description", "media_url", "media_type")
-
-    column_searchable_list = ("title", "description")
-    column_sortable_list = ("id", "title", "media_type")
-
-    create_modal = True
-    edit_modal = True
-
-    # ✅ Optional override to customize how delete works
+    # Optional: confirm delete
     def delete_model(self, model):
         try:
             self.session.delete(model)
@@ -44,4 +35,4 @@ class MyAdminIndexView(AdminIndexView):
 
 def setup_admin(app):
     admin = Admin(app, name='EDTISCAPE Admin', template_mode='bootstrap4', index_view=MyAdminIndexView())
-    admin.add_view(SecureModelView(PortfolioItem, db.session))
+    admin.add_view(ContactMessageAdmin(ContactMessage, db.session))
