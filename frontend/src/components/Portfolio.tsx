@@ -22,7 +22,7 @@ const samplePortfolioItems: PortfolioItem[] = [
     description:
       'A vibrant, high-energy edit featuring sharp cuts, fluid transitions, and rhythmic pacing. The color grade enhances sweetness and summer vibes, while motion design adds a playful punch—crafted to keep viewers visually engaged from start to finish.',
     image_url:
-      'https://res.cloudinary.com/dijbpjech/video/upload/v1753683617/STRAWBERRY_SANDAE_ubonmq.mp4',
+      'https://res.cloudinary.com/dijbpjech/video/upload/v1754898168/birthdqayyyy-1_w4ufqw.mp4',
     type: 'video',
     link: '#',
     created_at: '2024-06-01',
@@ -33,7 +33,18 @@ const samplePortfolioItems: PortfolioItem[] = [
     description:
       'A crisp commercial-style edit with tight pacing, bold motion graphics, and clean transitions. Built for digital ads, it blends energetic visuals with quick cuts and vibrant color grading to maximize viewer retention and brand recall.',
     image_url:
-      'https://res.cloudinary.com/dijbpjech/video/upload/v1753683607/11g_Fibre_w4cvgz.mp4',
+      'https://res.cloudinary.com/dijbpjech/video/upload/v1754898042/birthdqayyyy_hueuqc.mp4',
+    type: 'video',
+    link: '#',
+    created_at: '2024-06-01',
+  },
+  {
+    id: 4,
+    title: 'Dreamscape Travel Edit',
+    description:
+      'A cinematic travel montage with film-style color grading, soft transitions, and slow, immersive pacing. Dreamy visuals flow seamlessly, creating a nostalgic, almost timeless atmosphere that draws viewers into the journey.',
+    image_url:
+      'https://res.cloudinary.com/dijbpjech/video/upload/v1754898437/travel_xmqqxk.mp4',
     type: 'video',
     link: '#',
     created_at: '2024-06-01',
