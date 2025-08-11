@@ -38,17 +38,6 @@ const samplePortfolioItems: PortfolioItem[] = [
     link: '#',
     created_at: '2024-06-01',
   },
-  {
-    id: 4,
-    title: 'Dreamscape Travel Edit',
-    description:
-      'A cinematic travel montage with film-style color grading, soft transitions, and slow, immersive pacing. Dreamy visuals flow seamlessly, creating a nostalgic, almost timeless atmosphere that draws viewers into the journey.'
-    image_url:
-      'https://res.cloudinary.com/dijbpjech/video/upload/v1754898437/travel_xmqqxk.mp4',
-    type: 'video',
-    link: '#',
-    created_at: '2024-06-01',
-  },
 ];
 
 export const Portfolio = () => {
