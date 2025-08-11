@@ -21,7 +21,7 @@ const samplePortfolioItems: PortfolioItem[] = [
     title: 'Sundae Commercial Edit',
     description:
       'A vibrant, high-energy edit featuring sharp cuts, fluid transitions, and rhythmic pacing. The color grade enhances sweetness and summer vibes, while motion design adds a playful punch—crafted to keep viewers visually engaged from start to finish.',
-    video_url:
+    image_url:
       'https://res.cloudinary.com/dijbpjech/video/upload/v1754899254/sandaeedit_dysxg7.mp4',
     type: 'video',
     link: '#',
@@ -32,7 +32,7 @@ const samplePortfolioItems: PortfolioItem[] = [
     title: 'Alpino Super Oats Edit',
     description:
       'A crisp commercial-style edit with tight pacing, bold motion graphics, and clean transitions. Built for digital ads, it blends energetic visuals with quick cuts and vibrant color grading to maximize viewer retention and brand recall.',
-    video_url:
+    image_url:
       'https://res.cloudinary.com/dijbpjech/video/upload/v1754899091/alpinoedit_jdmiqe.mp4',
     type: 'video',
     link: '#',
@@ -43,7 +43,7 @@ const samplePortfolioItems: PortfolioItem[] = [
     title: 'Dreamscape Travel Edit',
     description:
       'A cinematic travel montage with film-style color grading, soft transitions, and slow, immersive pacing. Dreamy visuals flow seamlessly, creating a nostalgic, almost timeless atmosphere that draws viewers into the journey.'
-    video_url:
+    image_url:
       'https://res.cloudinary.com/dijbpjech/video/upload/v1754898437/travel_xmqqxk.mp4',
     type: 'video',
     link: '#',
