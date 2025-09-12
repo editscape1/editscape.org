@@ -18,33 +18,88 @@ const samplePortfolioItems: PortfolioItem[] = [
   },
   {
     id: 2,
-    title: 'Sundae Commercial Edit',
+    title: 'Monica’s Croissant Edit',
     description:
-      'A vibrant, high-energy edit featuring sharp cuts, fluid transitions, and rhythmic pacing. The color grade enhances sweetness and summer vibes, while motion design adds a playful punch—crafted to keep viewers visually engaged from start to finish.',
+      'Indulge in buttery, flaky layers wrapped around rich molten chocolate. This poster highlights the irresistible balance of crisp texture and gooey sweetness, perfectly designed to tempt every chocolate lover’s cravings.',
     image_url:
-      'https://res.cloudinary.com/dijbpjech/video/upload/v1754899254/sandaeedit_dysxg7.mp4',
-    type: 'video',
+      'https://res.cloudinary.com/dijbpjech/image/upload/v1757686711/choco_croissant_h4bpqi.png',
+    type: 'image',
     link: '#',
     created_at: '2024-06-01',
   },
   {
     id: 3,
-    title: 'Alpino Super Oats Edit',
+    title: 'BMW M4 Poster',
     description:
-      'A crisp commercial-style edit with tight pacing, bold motion graphics, and clean transitions. Built for digital ads, it blends energetic visuals with quick cuts and vibrant color grading to maximize viewer retention and brand recall.',
+      'A sleek showcase of the BMW M4 Competition, edited to highlight its aggressive design, luxury detailing, and powerful performance—capturing the perfect balance of speed, style, and sophistication.',
     image_url:
-      'https://res.cloudinary.com/dijbpjech/video/upload/v1754899091/alpinoedit_jdmiqe.mp4',
-    type: 'video',
+      'https://res.cloudinary.com/dijbpjech/image/upload/v1757686703/bmw_custom_poster_mabjn4.png',
+    type: 'image',
     link: '#',
     created_at: '2024-06-01',
   },
   {
     id: 4,
+    title: 'Monica’s Brewing Edit',
+    description:
+      'Edited with smooth transitions, color grading, and upbeat pacing to highlight Monika’s Bakery delights. Aesthetic, engaging, and crafted for maximum visual appeal.',
+    image_url:
+      'https://res.cloudinary.com/dijbpjech/video/upload/v1757686523/monica_s_bakery_wynwpg.mov',
+    type: 'video',
+    link: '#',
+    created_at: '2024-06-01',
+  },
+  {
+    id: 5,
     title: 'Dreamscape Travel Edit',
     description:
       'A cinematic travel montage with film-style color grading, soft transitions, and slow, immersive pacing. Dreamy visuals flow seamlessly, creating a nostalgic, almost timeless atmosphere that draws viewers into the journey.',
     image_url:
       'https://res.cloudinary.com/dijbpjech/video/upload/v1754898437/travel_xmqqxk.mp4',
+    type: 'video',
+    link: '#',
+    created_at: '2024-06-01',
+  },
+  {
+    id: 6,
+    title: 'Monica’s Bakery Edit',
+    description:
+      'Edited with smooth cuts, warm color grading, and steady pacing to capture the art of coffee brewing. Aesthetic and inviting, showcasing Monica’s Bakery’s cozy charm and flavorful coffee experience.',
+    image_url:
+      'https://res.cloudinary.com/dijbpjech/video/upload/v1757686912/shoot_and_edit_ldiygr.mov',
+    type: 'video',
+    link: '#',
+    created_at: '2024-06-01',
+  },
+  {
+    id: 8,
+    title: 'Creatorship App Promo Edit',
+    description:
+      'Crafted a dynamic and engaging advertisement for the Creatorship app. Smooth transitions, vibrant visuals, and attention-grabbing pacing highlight the app’s features for maximum viewer impact.',
+    image_url:
+      'https://res.cloudinary.com/dijbpjech/video/upload/v1757687275/creatorship_company_ad_jigdtv.mov',
+    type: 'video',
+    link: '#',
+    created_at: '2024-06-01',
+  },
+  {
+    id: 7,
+    title: 'Social Work Project Edit',
+    description:
+      'Edited with clean cuts, smooth transitions, balanced color grading, and thoughtful pacing to highlight impactful moments. Designed to engage viewers while emphasizing the mission and values of the social work company.',
+    image_url:
+      'https://res.cloudinary.com/dijbpjech/video/upload/v1757688915/systemic_altruism_company_vgnsp8.mp4',
+    type: 'video',
+    link: '#',
+    created_at: '2024-06-01',
+  },
+  {
+    id: 9,
+    title: 'Alpino Super Oats Edit',
+    description:
+      'A crisp commercial-style edit with tight pacing, bold motion graphics, and clean transitions. Built for digital ads, it blends energetic visuals with quick cuts and vibrant color grading to maximize viewer retention and brand recall.',
+    image_url:
+      'https://res.cloudinary.com/dijbpjech/video/upload/v1757690216/Untitled_design-2_ob1lo1.mp4',
     type: 'video',
     link: '#',
     created_at: '2024-06-01',
