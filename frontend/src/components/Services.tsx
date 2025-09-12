@@ -30,8 +30,8 @@ const services = [
   },
   {
     icon: Volume2,
-    title: 'Audio Editing',
-    description: 'Crystal-clear audio mixing, sound design, and post-production that brings professional polish to every project.',
+    title: 'Social Media Managing',
+    description: 'Creative Social Media Manager skilled in content strategy, audience engagement, and brand growth across digital platforms.',
   },
   {
     icon: Image,
